@@ -1,16 +1,9 @@
 using UnityEngine;
 
-public class IUIUpdate : MonoBehaviour
+public interface IUIUpdate
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public void UpdateMoney(int newMoney);
+    public void UpdateUpgradeUI(UpgradeType type, int newLevel);
+    public void UpdateBonusUI(BonusType type, float remainingTime, bool isActive);
+    public void ShowHint(string message);
 }

@@ -2,9 +2,9 @@ using UnityEngine;
 
 public interface IWalletAccess
 {
-    int GetMoney();
-    bool SpendMoney(int amount);
-    void AddMoney(int amount);
-    bool IsZonePurchased(string zoneId);
-    void PurchaseZone(string zoneId, int price);
+    public int GetMoney();
+    public bool SpendMoney(int amount);
+    public void AddMoney(int amount);
+    public bool IsZonePurchased(string zoneId);
+    public void PurchaseZone(string zoneId, int price);
 }
