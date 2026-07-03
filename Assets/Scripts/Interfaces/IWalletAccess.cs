@@ -1,9 +1,10 @@
 using UnityEngine;
 
-public class IWalletAccess : MonoBehaviour
+public interface IWalletAccess
 {
-    int GetMoney()
-    {
-        return 0;
-    }
+    int GetMoney();
+    bool SpendMoney(int amount);
+    void AddMoney(int amount);
+    bool IsZonePurchased(string zoneId);
+    void PurchaseZone(string zoneId, int price);
 }
