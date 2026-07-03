@@ -2,19 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerManipulator : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     Rigidbody2D body;
-    public float speed;
+    public float mobeSpeed;
     float XAxis, YAxis;
     Vector3 size;
-
 
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
         size = gameObject.transform.localScale;
-
     }
 
     void Update()
@@ -25,7 +23,7 @@ public class PlayerManipulator : MonoBehaviour
     {
         XAxis = Input.GetAxis("Horizontal");
         YAxis = Input.GetAxis("Vertical");
-        body.linearVelocity = new Vector2(XAxis * speed, YAxis * speed);
+        body.linearVelocity = new Vector2(XAxis * mobeSpeed, YAxis * mobeSpeed);
         if (XAxis > 0)
         {
             gameObject.transform.localScale = size;
