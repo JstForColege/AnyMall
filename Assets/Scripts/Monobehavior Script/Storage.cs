@@ -1,6 +1,6 @@
 ﻿using System;
 
-public class Storage : InteractableBase
+public class Storage
 {
 	/*private int _capacity;
 	private int _currentAmount;
@@ -22,12 +22,6 @@ public class Storage : InteractableBase
 		set => _item = value;
 	}
 
-	public void AddItem()
-	{
-		if (this.Item == Item)
-		{
-			++CurrentAmount;
-		}
-	}
+	public void AddItem() { }
 	public void RemoveItem() { }*/
 }

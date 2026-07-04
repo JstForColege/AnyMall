@@ -1,55 +1,24 @@
-﻿using Mono.Cecil;
-using NUnit.Framework;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System;
 
-public class ResourceNode : MonoBehaviour
+public class ResourceNode
 {
-	private int _amount;
+	/*private int _amount;
 	private int _timer;
-	private int _currentAmount = 0;
-	private ResourceFood _food;
+	private Resourse _food; //Resource - класс, который создаст Юсуф
 
 	public int Amount
 	{
 		get => _amount; 
 		set => _amount = value;
 	}
-	public int CurrentAmount
-	{
-		get => _currentAmount;
-		set => _currentAmount = value;
-	}
 	public int Timer
 	{
 		get => _timer;
 		set => _timer = value;
 	}
-	public ResourceFood Food
+	public Resource Food
 	{
 		get => _food;
 		set => _food = value;
-	}
-
-	public void Grow()
-	{
-		if (CurrentAmount <= Amount)
-		{
-			StartCoroutine(GrowCoroutine());
-		}
-	}
-
-	public IEnumerator GrowCoroutine()
-	{
-		++CurrentAmount;
-		yield return new WaitForSeconds(Timer);
-	}
-}
-
-
-public class ResourceFood //Заглушка покаа Юсуф не сделает класс
-{
-	public int id;
+	}*/
 }
