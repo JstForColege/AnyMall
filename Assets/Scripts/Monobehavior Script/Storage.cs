@@ -2,9 +2,9 @@
 
 public class Storage : InteractableBase
 {
-	/*private int _capacity;
+	private int _capacity;
 	private int _currentAmount;
-	private Resource _item;
+	private ResourceFood _item;
 
 	public int Capacity
 	{
@@ -16,7 +16,7 @@ public class Storage : InteractableBase
 		get => _currentAmount;
 		set => _currentAmount = value;
 	}
-	public Resource Item
+	public ResourceFood Item
 	{
 		get => _item;
 		set => _item = value;
@@ -29,5 +29,5 @@ public class Storage : InteractableBase
 			++CurrentAmount;
 		}
 	}
-	public void RemoveItem() { }*/
+	public void RemoveItem() { }
 }
