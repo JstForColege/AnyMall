@@ -2,7 +2,7 @@
 
 public class ResourceNode
 {
-	private int _amount;
+	/*private int _amount;
 	private int _timer;
 	private Resourse _food; //Resource - класс, который создаст Юсуф
 
@@ -20,5 +20,5 @@ public class ResourceNode
 	{
 		get => _food;
 		set => _food = value;
-	}
+	}*/
 }

@@ -2,7 +2,7 @@
 
 public class Producer
 {
-    private Resource _ingridient;
+    /*private Resource _ingridient;
     private int _maxIngridient;
 
     private Resource _outgridient;
@@ -42,5 +42,5 @@ public class Producer
     {
         get => _isWorking;
         set => _isWorking = value;
-    }
+    }*/
 }

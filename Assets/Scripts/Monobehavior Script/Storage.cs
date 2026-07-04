@@ -2,7 +2,7 @@
 
 public class Storage
 {
-	private int _capacity;
+	/*private int _capacity;
 	private int _currentAmount;
 	private Resource _item;
 
@@ -23,5 +23,5 @@ public class Storage
 	}
 
 	public void AddItem() { }
-	public void RemoveItem() { }
+	public void RemoveItem() { }*/
 }
