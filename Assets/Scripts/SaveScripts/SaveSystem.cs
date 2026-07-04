@@ -5,6 +5,99 @@ using System.IO;
 using System.Xml;
 using UnityEngine;
 
+//                              ГАЙД ПО СЕЙВАМ (Код ниже)
+//
+// 1. КАК СОХРАНИТЬ СВОИ ДАННЫЕ
+//    - Вызови: SaveSystem.Instance.SaveObject("уникальный_ключ", твоиДанные);
+//    - Пример:
+//        var data = new WalletData { money = 100, zones = new List<string>{"corn"} };
+//        SaveSystem.Instance.SaveObject("wallet", data);
+//    - SaveObject сам вызовет MarkDirty(), так что отдельно не нужно
+//
+// 2. КАК ЗАГРУЗИТЬ СВОИ ДАННЫЕ
+//    - Вызови: object raw = SaveSystem.Instance.LoadObject("уникальный_ключ");
+//    - Приведи к своему типу:
+//        WalletData data = raw as WalletData;
+//        if (data != null) { _money = data.money; _zones = data.zones; }
+//    - Вызывай в Awake() или Start() – SaveSystem уже загрузил файл в Start()
+//
+// 3. УНИКАЛЬНЫЕ КЛЮЧИ
+//    - Каждый модуль должен использовать свой ключ, чтобы не перезаписывать чужие данные
+//    - Рекомендация: использовать имя модуля + суффикс, например "wallet", "shelf_1", "playerStats"
+//    - Если ключ уже занят – данные перезапишутся
+//
+// 4. ЧТО ДЕЛАТЬ, ЕСЛИ Я МЕНЯЮ ДАННЫЕ НАПРЯМУЮ (БЕЗ SAVEOBJECT)?
+//    - Если ты изменяешь данные, которые уже сохранил, и хочешь, чтобы они сохранились,
+//      вызови SaveSystem.Instance.MarkDirty()
+//    - Пример: _money += 10; SaveSystem.Instance.MarkDirty();
+//    - Но проще использовать SaveObject – он сам вызовет MarkDirty
+//
+// 5. КАКИЕ ДАННЫЕ МОЖНО СОХРАНЯТЬ?
+//    - Любые сериализуемые объекты: числа, строки, списки, словари, свои классы с [Serializable]
+//    - Для своих классов добавляйте [System.Serializable] перед объявлением класса
+//    - Избегай сохранения ссылок на Unity-объекты (GameObject, Transform) – они не сериализуются
+//
+// 6. АВТОСОХРАНЕНИЕ
+//    - SaveSystem автоматически сохраняет все данные каждые 10 секунд, если есть изменения (isDirty)
+//    - Также сохраняет при закрытии игры (OnApplicationQuit)
+//    - Вы можете вызвать SaveSystem.Instance.SaveGame() для принудительного сохранения
+//
+// 7. ЗАГРУЗКА ПРИ СТАРТЕ
+//    - SaveSystem автоматически загружает сохранение в методе Start()
+//    - Вам не нужно вызывать LoadGame() самому – просто используй LoadObject()
+//    - Например:
+//      private void Start()
+//      {
+//          LoadWallet();
+//      }
+//      
+//      private void LoadWallet()
+//      {
+//          object raw = SaveSystem.Instance.LoadObject("wallet");
+//          if (raw != null)
+//          {
+//              WalletData data = raw as WalletData;
+//              if (data != null)
+//              {
+//                  _money = data.money;
+//                  _purchasedZones = data.zones;
+//              }
+//          }
+//      }
+//      
+// 8. ПРИМЕР ПОЛНОГО ЦИКЛА
+//    [System.Serializable]
+//    public class MyData
+//    {
+//        public int score;
+//        public string name;
+//    }
+// 
+//    private void SaveMyData()
+//    {
+//        var data = new MyData { score = 42, name = "Player" };
+//        SaveSystem.Instance.SaveObject("myData", data);
+//    }
+// 
+//    private void LoadMyData()
+//    {
+//        var raw = SaveSystem.Instance.LoadObject("myData");
+//        if (raw != null) {
+//            MyData data = raw as MyData;
+//            if (data != null) {
+//                _score = data.score;
+//                _name = data.name;
+//            }
+//        }
+//    }
+//
+// 9. УДАЛЕНИЕ СОХРАНЕНИЯ (для тестов)
+//    - При нажатии на кнопку I сохранение удаляется, используйте для тестов
+//
+// 10. ПРОВЕРКА НАЛИЧИЯ СОХРАНЕНИЯ
+//     - if (SaveSystem.Instance.HasSave()) { ... }
+//
+
 public class SaveSystem : MonoBehaviour
 {
     private static SaveSystem _instance;
@@ -47,6 +140,11 @@ public class SaveSystem : MonoBehaviour
             {
                 SaveGame();
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            DeleteSave();
         }
     }
 
@@ -145,6 +243,18 @@ public class SaveSystem : MonoBehaviour
             _loadedData.Clear();
             _pendingData.Clear();
             _isDirty = false;
+        }
+    }
+
+    public void DeleteSave()
+    {
+        if (File.Exists(_saveFilePath))
+        {
+            File.Delete(_saveFilePath);
+            _loadedData.Clear();
+            _pendingData.Clear();
+            _isDirty = false;
+            Debug.Log("Save deleted.");
         }
     }
 
