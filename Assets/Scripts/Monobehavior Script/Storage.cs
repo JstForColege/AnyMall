@@ -21,8 +21,6 @@ public class Storage
 		get => _item;
 		set => _item = value;
 	}
-
-<<<<<<< HEAD
 	public void AddItem()
 	{
 		if (this.Item == Item)
@@ -32,8 +30,4 @@ public class Storage
 	}
 	public void RemoveItem() { }
 }
-=======
-	public void AddItem() { }
-	public void RemoveItem() { }*/
-}
->>>>>>> 32b22e18101a3de36176176cf39aabf0f29dab90
+
