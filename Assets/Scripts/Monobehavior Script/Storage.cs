@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
+using UnityEngine;
 
-public class Storage
+public class Storage : MonoBehaviour
 {
 	private int _capacity;
 	private int _currentAmount;
@@ -23,11 +25,17 @@ public class Storage
 	}
 	public void AddItem()
 	{
-		if (this.Item == Item)
+		if (this.Item == Item && CurrentAmount <= Capacity)
 		{
-			++CurrentAmount;
+			StartCoroutine(AddCoroutine());
 		}
 	}
 	public void RemoveItem() { }
+
+	public IEnumerator AddCoroutine()
+	{
+        yield return new WaitForSeconds(1);
+		++CurrentAmount;
+    }
 }
 

@@ -40,8 +40,8 @@ public class ResourceNode : MonoBehaviour
 
     public IEnumerator GrowCoroutine()
     {
-        ++CurrentAmount;
         yield return new WaitForSeconds(Timer);
+        ++CurrentAmount;
     }
 }
 
