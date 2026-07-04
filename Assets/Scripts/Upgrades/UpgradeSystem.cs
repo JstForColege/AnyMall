@@ -101,6 +101,11 @@ public class UpgradeSystem : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         InitializeCosts();
+    }
+
+    private void Start()
+    {
+
         LoadLevels();
     }
 
