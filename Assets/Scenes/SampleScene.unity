@@ -377,7 +377,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a7ded8bd85ff2f45a0bfa940ab3b084, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Spawner
-  bushPrefab: {fileID: 0}
+  bush1Prefab: {fileID: 2498343893216027550, guid: b64d622c52190f448a54bb7f4ed5402d, type: 3}
+  bush2Prefab: {fileID: 2498343893216027550, guid: fd186bd19eba0614e8525e2c647bf515, type: 3}
 --- !u!4 &197231805
 Transform:
   m_ObjectHideFlags: 0
