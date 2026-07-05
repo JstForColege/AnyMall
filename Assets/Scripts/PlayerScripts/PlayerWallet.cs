@@ -12,7 +12,7 @@ public class WalletSaveData
 
 public class PlayerWallet : MonoBehaviour, IWalletAccess
 {
-    [SerializeField] private TextMeshPro moneyText;
+    [SerializeField] private TextMeshProUGUI moneyText;
     [SerializeField] private int money = 0;
     private List<string> purchasedZones = new List<string>();
     private const string SAVE_KEY = "wallet";
