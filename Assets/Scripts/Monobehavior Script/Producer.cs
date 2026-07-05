@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 public class Producer : MonoBehaviour
@@ -31,7 +30,7 @@ public class Producer : MonoBehaviour
     public int CurrentIngridient
     {
         get => _currentIngridient;
-        set => _currentIngridient= value;
+        set => _currentIngridient = value;
     }
 
     public ResourceFood Outgridient
@@ -72,10 +71,7 @@ public class Producer : MonoBehaviour
     {
         if (IsWorking == true)
         {
-            if (CurrentOutgridient < MaxOutgridient && CurrentIngridient > 0)
-            {
-                StartCoroutine(ProduceCoroutine());
-            }
+            StartCoroutine(ProduceCoroutine());
         }
         else
         {
@@ -84,8 +80,11 @@ public class Producer : MonoBehaviour
     }
     public IEnumerator ProduceCoroutine()
     {
-        --CurrentIngridient;
-        yield return new WaitForSeconds(MakingTime);
-        ++CurrentOutgridient;
+        while (CurrentOutgridient < MaxOutgridient && CurrentIngridient > 0)
+        {
+            --CurrentIngridient;
+            yield return new WaitForSeconds(MakingTime);
+            ++CurrentOutgridient;
+        }
     }
 }

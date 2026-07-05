@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 public class ResourceNode : MonoBehaviour
 {
+    #region приватные_поля
     private int _amount;
     private int _timer;
     private int _currentAmount = 0;
     private ResourceFood _food;
-
+    private bool _isGrowing = false;
+    #endregion
     public int Amount
     {
         get => _amount;
@@ -30,18 +31,27 @@ public class ResourceNode : MonoBehaviour
         set => _food = value;
     }
 
-    public void Grow()
+    private void Grow()
     {
-        if (CurrentAmount <= Amount)
+        if (!_isGrowing)
         {
+            _isGrowing = true;
             StartCoroutine(GrowCoroutine());
         }
     }
-
-    public IEnumerator GrowCoroutine()
+    private IEnumerator GrowCoroutine()
     {
-        yield return new WaitForSeconds(Timer);
-        ++CurrentAmount;
+        while (CurrentAmount < Amount)
+        {
+            yield return new WaitForSeconds(Timer);
+            ++CurrentAmount;
+        }
+        _isGrowing = false;
+    }
+
+    private void Start()
+    {
+        Grow();
     }
 }
 
