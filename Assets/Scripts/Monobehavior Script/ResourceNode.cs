@@ -42,7 +42,6 @@ public class ResourceNode : MonoBehaviour
     }*/
     #endregion
 
-
     private void Grow()
     {
         if (!_isGrowing)
