@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - Shelf
+  - ExitPoint
   layers:
   - Default
   - TransparentFX
@@ -44,6 +45,9 @@ TagManager:
     locked: 0
   - name: fruits
     uniqueID: 2630912215
+    locked: 0
+  - name: New Layer 2
+    uniqueID: 4208624561
     locked: 0
   m_RenderingLayers:
   - Default
