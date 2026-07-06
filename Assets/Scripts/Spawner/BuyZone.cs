@@ -17,6 +17,7 @@ public class BuyZone : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             _isPurchased = true;
+            gameObject.SetActive(false);
             _spawner.Spawn();
         }
     }
