@@ -16,6 +16,7 @@ public class ResourceNode : MonoBehaviour
     private Transform[] _fruitSpawns;
     [SerializeField]
     private GameObject _fruitPrefab;
+    [SerializeField] private ItemData _itemData;
 
     private bool _isGrowing = false;
     #endregion
@@ -64,6 +65,19 @@ public class ResourceNode : MonoBehaviour
     private void Start()
     {
         Grow();
+    }
+
+    public ItemData Harvest()
+    {
+        if (_currentAmount <= 0)
+        {
+            Debug.Log("Нет плодов для сбора");
+            return null;
+        }
+
+        _currentAmount--;
+
+        return _itemData;
     }
 }
 
