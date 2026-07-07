@@ -18,7 +18,8 @@ public class ResourceNode : MonoBehaviour
     private GameObject[] _spawnedFruits;
     [SerializeField]
     private GameObject _fruitPrefab;
-    [SerializeField] private ItemData _itemData;
+    [SerializeField] 
+    private ItemData _itemData;
 
     private bool _isGrowing = false;
     #endregion
