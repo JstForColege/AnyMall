@@ -60,6 +60,6 @@ public class ItemData
     {
         Id = id;
         Name = name;
-        Icon = icon;
+        //Icon = icon;
     }
 }

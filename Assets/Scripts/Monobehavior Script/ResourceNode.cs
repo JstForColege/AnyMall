@@ -10,13 +10,16 @@ public class ResourceNode : MonoBehaviour
     private int _timer;
 
     private int _currentAmount = 0;
-    //private ResourceFood _food;
+    [SerializeField]
+    private ItemData _food;
 
     [SerializeField]
     private Transform[] _fruitSpawns;
+    private GameObject[] _spawnedFruits;
     [SerializeField]
     private GameObject _fruitPrefab;
-    [SerializeField] private ItemData _itemData;
+    [SerializeField] 
+    private ItemData _itemData;
 
     private bool _isGrowing = false;
     #endregion
@@ -36,15 +39,11 @@ public class ResourceNode : MonoBehaviour
         get => _timer;
         set => _timer = value;
     }
-    /*public ResourceFood Food
-    {
-        get => _food;
-        set => _food = value;
-    }*/
     #endregion
 
     private void Grow()
     {
+        _spawnedFruits = new GameObject[_fruitSpawns.Length];
         if (!_isGrowing)
         {
             _isGrowing = true;
@@ -57,7 +56,7 @@ public class ResourceNode : MonoBehaviour
         {
             yield return new WaitForSeconds(Timer);
             ++CurrentAmount;
-            Instantiate(_fruitPrefab, _fruitSpawns[CurrentAmount - 1].position, Quaternion.identity);
+            _spawnedFruits[CurrentAmount - 1] = Instantiate(_fruitPrefab, _fruitSpawns[CurrentAmount - 1].position, Quaternion.identity);
         }
         _isGrowing = false;
     }
@@ -75,8 +74,9 @@ public class ResourceNode : MonoBehaviour
             return null;
         }
 
-        _currentAmount--;
-
+        -- _currentAmount;
+        Destroy(_spawnedFruits[CurrentAmount]);
+        _spawnedFruits[_currentAmount] = null;
         return _itemData;
     }
 }

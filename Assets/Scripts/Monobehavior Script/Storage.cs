@@ -4,38 +4,58 @@ using UnityEngine;
 
 public class Storage : MonoBehaviour
 {
+	[SerializeField]
 	private int _capacity;
-	private int _currentAmount;
-	private ResourceFood _item;
-
-	public int Capacity
-	{
-		get => _capacity;
-		set => _capacity = value;
-	}
+	[SerializeField]
+	private ItemData _item;
+	[SerializeField]
+	private Transform[] _storageSlots;
+    [SerializeField]
+    private GameObject _fruitPrefab;
+    private int _currentAmount;
 	public int CurrentAmount
 	{
 		get => _currentAmount;
 		set => _currentAmount = value;
 	}
-	public ResourceFood Item
+	public bool CanAdd(ItemData item)
 	{
-		get => _item;
-		set => _item = value;
-	}
-	public void AddItem()
-	{
-		if (this.Item == Item && CurrentAmount <= Capacity)
+		if (item != _item)
 		{
-			StartCoroutine(AddCoroutine());
+			return false;
 		}
+		if (_currentAmount >= _capacity)
+		{ 
+			return false;
+		}
+			
+		return true;
 	}
-	public void RemoveItem() { }
+	public bool AddItem(ItemData item)
+	{
+		if (!CanAdd(item))
+		{
+			return false;
+		}
+		StartCoroutine(AddCoroutine());
+		return true;
+	}
+	public ItemData RemoveItem()
+	{
+		if (_currentAmount <= 0)
+		{
+			return null;
+		}
+		-- _currentAmount;
+		return _item;
+	}
 
 	public IEnumerator AddCoroutine()
 	{
         yield return new WaitForSeconds(1);
 		++CurrentAmount;
+		Debug.Log("Фрукт на полкку");
+		Instantiate(_fruitPrefab, _storageSlots[_currentAmount].position, Quaternion.identity);
     }
 }
 
