@@ -33,7 +33,7 @@ public class CustomerSpawner : MonoBehaviour
         CustomerAI customerAI = newCustomer.GetComponent<CustomerAI>();
         if (customerAI != null)
         {
-            int count = Random.Range(2, Mathf.Min(5, waypoints.Count + 1));
+            int count = Random.Range(2, waypoints.Count + 1);
             List<Transform> selected = new List<Transform>();
             for (int i = 0; i < count; i++)
             {

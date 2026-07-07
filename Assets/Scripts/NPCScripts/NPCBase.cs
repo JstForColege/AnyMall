@@ -30,7 +30,7 @@ public abstract class NPCBase : MonoBehaviour
 
     public bool HasReachedTarget()
     {
-        return agent.hasPath && agent.remainingDistance <= agent.stoppingDistance;
+        return agent.remainingDistance <= agent.stoppingDistance;
     }
 
     public virtual void LeaveStore()

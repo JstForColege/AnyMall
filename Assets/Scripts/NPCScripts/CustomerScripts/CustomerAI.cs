@@ -9,7 +9,7 @@ public class CustomerAI : NPCBase
     private int currentWaypointIndex = 0;
     private bool isWaiting = false;
     private float waitTimer = 0f;
-    private float waitDuration = 1.5f; // время покупки (пока заглушка)
+    private float waitDuration = 1.5f;
 
     public void SetWaypoints(List<Transform> points)
     {
