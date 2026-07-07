@@ -149,6 +149,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  navMeshAgent: {fileID: 8685145736241573647}
 --- !u!195 &8685145736241573647
 NavMeshAgent:
   m_ObjectHideFlags: 0

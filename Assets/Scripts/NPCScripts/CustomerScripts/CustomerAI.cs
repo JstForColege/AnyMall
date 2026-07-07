@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class CustomerAI : NPCBase
 {
     [SerializeField] private List<Transform> waypoints;
+    [SerializeField] private Transform cashPoint;
     private int currentWaypointIndex = 0;
     private bool isWaiting = false;
     private float waitTimer = 0f;
@@ -23,6 +25,11 @@ public class CustomerAI : NPCBase
         }
     }
 
+    public void SetCashPoint(Transform point)
+    {
+        cashPoint = point;
+    }
+
     private void MoveToNextWaypoint()
     {
         if (currentWaypointIndex < waypoints.Count)
@@ -31,8 +38,13 @@ public class CustomerAI : NPCBase
         }
         else
         {
-            LeaveStore();
+            MoveToCash();
         }
+    }
+
+    private void MoveToCash()
+    {
+        MoveTo(cashPoint.position);
     }
 
     public override void UpdateState()
@@ -49,7 +61,6 @@ public class CustomerAI : NPCBase
             return;
         }
 
-        // Если агент достиг цели
         if (HasReachedTarget())
         {
             // пока имитируем покупку

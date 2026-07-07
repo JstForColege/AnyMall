@@ -10,12 +10,16 @@ public abstract class NPCBase : MonoBehaviour
 
     protected virtual void Start()
     {
+
         agent = GetComponent<NavMeshAgent>();
         if (agent == null)
             agent = gameObject.AddComponent<NavMeshAgent>();
 
         GameObject exit = GameObject.FindGameObjectWithTag("ExitPoint");
         if (exit != null) exitPoint = exit.transform;
+
+        agent.updateRotation = false;
+        agent.updateUpAxis = false;
     }
 
     public void MoveTo(Vector3 target)
@@ -26,7 +30,7 @@ public abstract class NPCBase : MonoBehaviour
 
     public bool HasReachedTarget()
     {
-        return agent.remainingDistance <= agent.stoppingDistance;
+        return agent.hasPath && agent.remainingDistance <= agent.stoppingDistance;
     }
 
     public virtual void LeaveStore()

@@ -8,6 +8,8 @@ public class CustomerSpawner : MonoBehaviour
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private float spawnInterval = 5f;
     [SerializeField] private List<Transform> waypoints;
+    [SerializeField] private Transform cashWaypoint;
+
 
     private void Start()
     {
@@ -40,6 +42,7 @@ public class CustomerSpawner : MonoBehaviour
                     selected.Add(point);
             }
             customerAI.SetWaypoints(selected);
+            customerAI.SetCashPoint(cashWaypoint);
         }
     }
 }
