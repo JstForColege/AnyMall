@@ -2,6 +2,5 @@
 
 public interface InteractableBase
 {
-    public void OnInteract() { }
-    public void GetState() { }
+    public void OnInteract(PlayerInventory inventory) { }
 }

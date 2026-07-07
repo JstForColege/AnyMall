@@ -1,0 +1,32 @@
+[33m270e754[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdev[m[33m, [m[1;31morigin/dev[m[33m, [m[1;32mShimohinA[m[33m)[m добавлен_метод_Produce_с_корутином_в_Producer
+[33m5cb0f58[m добавлен_метод_Produce_с_корутином_в_Producer
+[33m32b22e1[m "Merge dev into ShimohinA"Merge branch 'dev' of https://github.com/JstForColege/AnyMall into ShimohinA
+[33mb65d7ff[m Сделана система апгрейдов
+[33m6be003d[m[33m ([m[1;31morigin/ShimohinA[m[33m)[m Разрешил конфликт при слиянии с ShimohinA
+[33m69fda8e[m Добавлен UI
+[33m04a3097[m Merge branch 'dev' of https://github.com/JstForColege/AnyMall into ShimohinK
+[33mf8c8296[m Сделана система апгрейдов
+[33m3f8d72e[m Merge branch 'dev' of https://github.com/JstForColege/AnyMall into GriszinA
+[33m3fb4fc2[m добавлен_метод_Grow_в_ResourceNode
+[33mea2d8a4[m Merge branch 'dev' of https://github.com/JstForColege/AnyMall into ShimohinA
+[33m9830d56[m Добавлены анимации и немного переделан PlayerController
+[33me7745e4[m актуальная_версия_04072026_1454
+[33md136ea8[m пулл_из_дев_2
+[33m0e55ed9[m починка_версии_1
+[33m682dca7[m Конфликт на сцене решён
+[33m12d3df3[m Добавлена первая версяи персонажа
+[33m8ad6b19[m Сделан гайд для пользования сохранениями и добавлен SaveManager на сцену
+[33m56e9c35[m Merge branch 'dev' of https://github.com/JstForColege/AnyMall into ShimohinK
+[33m7494c48[m Добавлены микро вправки и добавлен PlayerInventory
+[33m730763a[m Добавлена SaveSystem
+[33m983c999[m юнити_1
+[33mb9fee09[m Мои изменения + изменения из dev
+[33m0149997[m добавлены вправки и интерфейс IInteractable
+[33mf0058a8[m[33m ([m[1;31morigin/ShimohinK[m[33m)[m Добавлен Интерфейс IUIUpdate
+[33mad79282[m Добавлен Интерфейс IWalletAccess
+[33ma0913f6[m Добавлен Интерфейс IWalletAccess
+[33m0b227d4[m Добавлены enum списки Апгрейдов и Бонусов
+[33m0726572[m добавлено начальное управление
+[33m68c6ff8[m[33m ([m[1;31morigin/GriszinA[m[33m)[m Реализованны классы из схемы (начальный этап)
+[33md282f21[m Создал директорию Script
+[33mfb361a9[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m Initial commit

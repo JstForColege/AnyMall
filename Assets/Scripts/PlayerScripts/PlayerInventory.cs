@@ -1,55 +1,44 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInventory : MonoBehaviour
+[System.Serializable]
+public class PlayerInventory
 {
+    [SerializeField] private int maxSize = 1;
     private Stack<ItemData> stack = new Stack<ItemData>();
-    private int maxSize;
+
     public PlayerInventory(int initialMaxSize = 1)
     {
         maxSize = initialMaxSize;
     }
 
-    public int Count { get { return stack.Count; } }
-    public int MaxSize { get { return maxSize; } }
-    public bool IsFull{ get 
-        {
-            if (stack.Count >= maxSize)
-                return true;
-            else
-                return false;
-        }
-    }
+    public int Count => stack.Count;
+    public int MaxSize => maxSize;
+    public bool IsFull => stack.Count >= maxSize;
+    public bool IsEmpty => stack.Count == 0;
 
-    public bool IsEmpty { get
-        {
-            if (stack.Count == 0)
-                return true;
-            else
-                return false;
-        }
-    }
-
-    public void Push(ItemData item)
+    public bool Push(ItemData item)
     {
         if (IsFull)
         {
             Debug.Log("Инвентарь полон");
-            return;
+            return false;
         }
         stack.Push(item);
+        Debug.Log($"Предмет {item.Name} добавлен в инвентарь. Всего: {stack.Count}");
+        return true;
     }
 
     public ItemData Pop()
     {
-        if (IsEmpty) 
+        if (IsEmpty)
             return null;
         return stack.Pop();
     }
 
     public ItemData Peek()
     {
-        if (IsEmpty) 
+        if (IsEmpty)
             return null;
         return stack.Peek();
     }
@@ -58,10 +47,19 @@ public class PlayerInventory : MonoBehaviour
     {
         stack.Clear();
     }
+}
 
-    public class ItemData
+[System.Serializable]
+public class ItemData
+{
+    public string Id;
+    public string Name;
+    public Sprite Icon;
+
+    public ItemData(string id, string name, Sprite icon = null)
     {
-        public string Id;
-        public string Name;
+        Id = id;
+        Name = name;
+        //Icon = icon;
     }
 }
