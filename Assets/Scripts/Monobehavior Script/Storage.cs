@@ -9,7 +9,7 @@ public class Storage : MonoBehaviour
 	[SerializeField]
 	private ItemData _item;
 	[SerializeField]
-	private Transform[] _storageSlots;
+	private Transform[] _storageSlots; 
     [SerializeField]
     private GameObject _fruitPrefab;
     private int _currentAmount;
@@ -18,7 +18,7 @@ public class Storage : MonoBehaviour
 		get => _currentAmount;
 		set => _currentAmount = value;
 	}
-	public bool CanAdd(ItemData item)
+	public bool CanAdd(ItemData item) //сделать enum
 	{
 		if (item != _item)
 		{
@@ -52,9 +52,9 @@ public class Storage : MonoBehaviour
 
 	public IEnumerator AddCoroutine()
 	{
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.3f);
 		++CurrentAmount;
-		Debug.Log("Фрукт на полкку");
+		Debug.Log("Фрукт на полку");
 		Instantiate(_fruitPrefab, _storageSlots[_currentAmount].position, Quaternion.identity);
     }
 }

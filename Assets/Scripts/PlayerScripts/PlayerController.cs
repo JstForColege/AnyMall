@@ -47,17 +47,13 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        ResourceNode node = other.GetComponent<ResourceNode>();
-        if (node != null)
+        if (other.TryGetComponent(out ResourceNode node))
         {
             ItemData item = node.Harvest();
             if (item != null)
             {
-                bool added = inventory.Push(item);
-                if (added)
-                {
-                    UpdateHand();
-                }
+                if (!inventory.Push(item)) return;
+                UpdateHand();
             }
         }
     }

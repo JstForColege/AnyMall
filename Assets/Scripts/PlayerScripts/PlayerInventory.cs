@@ -50,7 +50,7 @@ public class PlayerInventory
 }
 
 [System.Serializable]
-public class ItemData
+public class ItemData //сделать enum
 {
     public string Id;
     public string Name;
