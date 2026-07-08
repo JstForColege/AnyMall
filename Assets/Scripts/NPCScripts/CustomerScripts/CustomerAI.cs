@@ -4,15 +4,40 @@ using UnityEngine;
 
 public class CustomerAI : NPCBase
 {
-    [SerializeField] private List<Transform> waypoints;
-    [SerializeField] private Transform cashPoint;
-    [SerializeField] private int currentWaypointIndex = 0;
+    private List<Transform> waypoints;
+    private Transform cashPoint;
+    private int currentWaypointIndex = 0;
     private enum State { MovingToShelf, WaitingAtShelf, MovingToCash, WaitingAtCash }
     private State currentState = State.MovingToShelf;
     private float waitTimer = 0f;
     private float waitDuration = 1.5f;
 
+    private CustomerSpawner spawner;
+
     public void SetWaypoints(List<Transform> points)
+    {
+        // Ждём, пока агент инициализируется
+        if (agent == null)
+        {
+            StartCoroutine(DelayedSetWaypoints(points));
+            return;
+        }
+
+        ApplyWaypoints(points);
+    }
+
+    private IEnumerator DelayedSetWaypoints(List<Transform> points)
+    {
+        yield return new WaitForSeconds(0.1f);
+        if (agent == null)
+        {
+            Debug.LogError("Agent still null after delay!");
+            yield break;
+        }
+        ApplyWaypoints(points);
+    }
+
+    private void ApplyWaypoints(List<Transform> points)
     {
         float threshold = agent.stoppingDistance + 0.2f;
         waypoints = new List<Transform>();
@@ -21,17 +46,13 @@ public class CustomerAI : NPCBase
             if (Vector3.Distance(transform.position, p.position) > threshold)
                 waypoints.Add(p);
         }
-        if (agent == null)
-        {
-            Debug.LogWarning("Agent not initialized yet");
-            StartCoroutine(DelayedSetWaypoints(points));
-            return;
-        }
+
         if (waypoints.Count > 0)
         {
             currentWaypointIndex = 0;
             currentState = State.MovingToShelf;
             MoveToNextWaypoint();
+            Debug.Log($"Customer: Starting with {waypoints.Count} waypoints");
         }
         else
         {
@@ -42,6 +63,11 @@ public class CustomerAI : NPCBase
     public void SetCashPoint(Transform point)
     {
         cashPoint = point;
+    }
+
+    public void SetSpawner(CustomerSpawner spawnerRef)
+    {
+        spawner = spawnerRef;
     }
 
     private void MoveToNextWaypoint()
@@ -70,11 +96,7 @@ public class CustomerAI : NPCBase
             LeaveStore();
         }
     }
-    private IEnumerator DelayedSetWaypoints(List<Transform> points)
-    {
-        yield return new WaitForSeconds(0.1f);
-        SetWaypoints(points);
-    }
+
     public override void UpdateState()
     {
         if (agent == null || !agent.isActiveAndEnabled || !agent.isOnNavMesh)
@@ -117,5 +139,13 @@ public class CustomerAI : NPCBase
     {
         LeaveStore();
         Debug.Log("Customer: Payment done, leaving");
+    }
+
+    private void OnDestroy()
+    {
+        if (spawner != null)
+        {
+            spawner.OnCustomerLeft(this);
+        }
     }
 }

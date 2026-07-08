@@ -9,6 +9,9 @@ public class CustomerSpawner : MonoBehaviour
     [SerializeField] private float spawnInterval = 5f;
     [SerializeField] private List<Transform> waypoints;
     [SerializeField] private Transform cashWaypoint;
+    [SerializeField] private int maxCustomers = 8;
+
+    private List<CustomerAI> activeCustomers = new List<CustomerAI>();
 
     private void Start()
     {
@@ -26,6 +29,12 @@ public class CustomerSpawner : MonoBehaviour
 
     private void SpawnCustomer()
     {
+        if (activeCustomers.Count >= maxCustomers)
+        {
+            Debug.Log($"CustomerSpawner: Max customers ({maxCustomers}) reached, skipping spawn");
+            return;
+        }
+
         if (customerPrefab == null || spawnPoint == null) return;
         if (waypoints == null || waypoints.Count == 0) return;
 
@@ -33,7 +42,7 @@ public class CustomerSpawner : MonoBehaviour
         CustomerAI customerAI = newCustomer.GetComponent<CustomerAI>();
         if (customerAI != null)
         {
-            int count = Mathf.Min(Random.Range(2, 4), waypoints.Count);
+            int count = Random.Range(2, Mathf.Min(waypoints.Count + 1, 4));
             List<Transform> selected = new List<Transform>();
             List<Transform> available = new List<Transform>(waypoints);
 
@@ -45,8 +54,34 @@ public class CustomerSpawner : MonoBehaviour
                 available.RemoveAt(idx);
             }
 
+            if (selected.Count > 0 && Vector3.Distance(spawnPoint.position, selected[0].position) < 0.5f)
+            {
+                Transform first = selected[0];
+                selected.RemoveAt(0);
+                if (available.Count > 0)
+                {
+                    selected.Insert(0, available[Random.Range(0, available.Count)]);
+                }
+                else
+                {
+                    selected.Add(first);
+                }
+            }
+
             customerAI.SetWaypoints(selected);
             customerAI.SetCashPoint(cashWaypoint);
+
+            activeCustomers.Add(customerAI);
+            customerAI.SetSpawner(this);
+        }
+    }
+
+    public void OnCustomerLeft(CustomerAI customer)
+    {
+        if (activeCustomers.Contains(customer))
+        {
+            activeCustomers.Remove(customer);
+            Debug.Log($"CustomerSpawner: Customer left, {activeCustomers.Count}/{maxCustomers} active");
         }
     }
 }

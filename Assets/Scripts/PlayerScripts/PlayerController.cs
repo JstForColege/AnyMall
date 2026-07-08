@@ -102,7 +102,20 @@ public class PlayerController : MonoBehaviour
             }
             return;
         }
-
+        HooliganAI hooligan = other.GetComponent<HooliganAI>();
+        if (hooligan != null)
+        {
+            bool chased = hooligan.TryChaseAway();
+            if (chased)
+            {
+                Debug.Log("Игрок: Прогнан");
+            }
+            else
+            {
+                Debug.Log("Игрок: Хулиган ещё не у стеллажа!");
+            }
+            return;
+        }
         // надо: взаимодействие с другими объектами через IInteractable
     }
 
