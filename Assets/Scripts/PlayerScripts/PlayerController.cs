@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -29,12 +30,13 @@ public class PlayerController : MonoBehaviour
         if (spriteRenderer == null)
             spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
-        inventory = new PlayerInventory(1);
+        inventory = new PlayerInventory(inventory.MaxSize);
 
         if (handPosition == null)
             Debug.LogError("HandPosition не назначен в инспекторе!");
 
         UpdateHand();
+        Debug.Log($"MaxSize = {inventory.MaxSize}");
     }
 
     private void Update()
@@ -90,6 +92,7 @@ public class PlayerController : MonoBehaviour
     {
         if (other.TryGetComponent(out ResourceNode node))
         {
+            if (inventory.IsFull) return;
             ItemData item = node.Harvest();
             if (item != null)
             {
@@ -97,6 +100,16 @@ public class PlayerController : MonoBehaviour
                 UpdateHand();
             }
             return;
+        }
+        if (other.TryGetComponent(out Storage shelf))
+        {
+            if (inventory.IsEmpty) return;
+            ItemData item = inventory.Peek();
+            if (shelf.AddItem(item))
+            {
+                inventory.Pop();
+                UpdateHand();
+            }
         }
 
         // надо: взаимодействие с другими объектами через IInteractable
