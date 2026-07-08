@@ -1,27 +1,41 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class CustomerAI : NPCBase
 {
     [SerializeField] private List<Transform> waypoints;
     [SerializeField] private Transform cashPoint;
-    private int currentWaypointIndex = 0;
-    private bool isWaiting = false;
+    [SerializeField] private int currentWaypointIndex = 0;
+    private enum State { MovingToShelf, WaitingAtShelf, MovingToCash, WaitingAtCash }
+    private State currentState = State.MovingToShelf;
     private float waitTimer = 0f;
-    private float waitDuration = 1.5f; // время покупки (пока заглушка)
+    private float waitDuration = 1.5f;
 
     public void SetWaypoints(List<Transform> points)
     {
-        waypoints = points;
-        currentWaypointIndex = 0;
-        if (waypoints != null && waypoints.Count > 0)
+        float threshold = agent.stoppingDistance + 0.2f;
+        waypoints = new List<Transform>();
+        foreach (Transform p in points)
         {
+            if (Vector3.Distance(transform.position, p.position) > threshold)
+                waypoints.Add(p);
+        }
+        if (agent == null)
+        {
+            Debug.LogWarning("Agent not initialized yet");
+            StartCoroutine(DelayedSetWaypoints(points));
+            return;
+        }
+        if (waypoints.Count > 0)
+        {
+            currentWaypointIndex = 0;
+            currentState = State.MovingToShelf;
             MoveToNextWaypoint();
         }
         else
         {
-            LeaveStore();
+            GoToCash();
         }
     }
 
@@ -35,46 +49,73 @@ public class CustomerAI : NPCBase
         if (currentWaypointIndex < waypoints.Count)
         {
             MoveTo(waypoints[currentWaypointIndex].position);
+            currentState = State.MovingToShelf;
         }
         else
         {
-            MoveToCash();
+            GoToCash();
         }
     }
 
-    private void MoveToCash()
+    private void GoToCash()
     {
-        MoveTo(cashPoint.position);
+        if (cashPoint != null)
+        {
+            MoveTo(cashPoint.position);
+            currentState = State.MovingToCash;
+            Debug.Log("Customer: Going to cash");
+        }
+        else
+        {
+            LeaveStore();
+        }
     }
-
+    private IEnumerator DelayedSetWaypoints(List<Transform> points)
+    {
+        yield return new WaitForSeconds(0.1f);
+        SetWaypoints(points);
+    }
     public override void UpdateState()
     {
-        if (isWaiting)
-        {
-            waitTimer -= Time.deltaTime;
-            if (waitTimer <= 0f)
-            {
-                isWaiting = false;
-                currentWaypointIndex++;
-                MoveToNextWaypoint();
-            }
+        if (agent == null || !agent.isActiveAndEnabled || !agent.isOnNavMesh)
             return;
-        }
 
-        if (HasReachedTarget())
+        switch (currentState)
         {
-            // пока имитируем покупку
-            if (currentWaypointIndex < waypoints.Count)
-            {
-                isWaiting = true;
-                waitTimer = waitDuration;
-                // Здесь позже будет логика взятия товара с полки, пока отладка
-                Debug.Log($"Покуп: пришел на точку {currentWaypointIndex}");
-            }
-            else
-            {
-                // Если достиг выхода пока ничего не делаем, базовый класс сам уничтожит
-            }
+            case State.MovingToShelf:
+                if (HasReachedTarget())
+                {
+                    currentState = State.WaitingAtShelf;
+                    waitTimer = waitDuration;
+                    Debug.Log($"Customer: Arrived at shelf {currentWaypointIndex}");
+                }
+                break;
+
+            case State.WaitingAtShelf:
+                waitTimer -= Time.deltaTime;
+                if (waitTimer <= 0f)
+                {
+                    currentWaypointIndex++;
+                    MoveToNextWaypoint();
+                }
+                break;
+
+            case State.MovingToCash:
+                if (HasReachedTarget())
+                {
+                    currentState = State.WaitingAtCash;
+                    Debug.Log("Customer: Waiting at cash");
+                }
+                break;
+
+            case State.WaitingAtCash:
+                break;
         }
+    }
+
+    public void OnPaymentDone()
+    {
+        LeaveStore();
+        Debug.Log("Customer: Payment done, leaving");
     }
 }
