@@ -29,12 +29,10 @@ public class PlayerController : MonoBehaviour
         if (spriteRenderer == null)
             spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
-        if (inventory == null)
-            inventory = new PlayerInventory(1);
+        inventory = new PlayerInventory(1);
 
-        // Надо: интегрировать с UpgradeSystem
-        // int level = UpgradeSystem.Instance.GetCurrentLevel(UpgradeType.PLAYER_INVENTORY);
-        // inventory = new PlayerInventory(1 + level);
+        if (handPosition == null)
+            Debug.LogError("HandPosition не назначен в инспекторе!");
 
         UpdateHand();
     }
@@ -42,8 +40,8 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         HandleInput();
-        Move();
-        Animation();
+        UpdateSpriteFlip();
+        UpdateAnimation();
     }
 
     private void FixedUpdate()
@@ -59,36 +57,29 @@ public class PlayerController : MonoBehaviour
         isMoving = moveInput.magnitude > 0.1f;
     }
 
-    private void Move()
+    private void UpdateSpriteFlip()
     {
+        if (spriteRenderer == null) return;
         if (moveInput.x > 0)
-        {
             spriteRenderer.flipX = false;
-        }
         else if (moveInput.x < 0)
-        {
             spriteRenderer.flipX = true;
-        }
     }
 
     private void ApplyMovement()
     {
         if (body != null)
-        {
             body.linearVelocity = moveInput * moveSpeed;
-        }
     }
 
     #endregion
 
     #region Анимация
 
-    private void Animation()
+    private void UpdateAnimation()
     {
         if (animator != null)
-        {
             animator.SetBool("isMoving", isMoving);
-        }
     }
 
     #endregion
@@ -112,12 +103,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        // надо: Взаимодействие с другими объектами через IInteractable
-        // IInteractable interactable = other.GetComponent<IInteractable>();
-        // if (interactable != null)
-        // {
-        //     interactable.OnInteract(this);
-        // }
+        // надо: взаимодействие с другими объектами через IInteractable
     }
 
     #endregion
@@ -136,6 +122,12 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateHand()
     {
+        if (inventory == null)
+        {
+            Debug.LogError("Inventory is null in UpdateHand!");
+            return;
+        }
+
         if (handItemObject != null)
         {
             Destroy(handItemObject);
@@ -151,6 +143,12 @@ public class PlayerController : MonoBehaviour
         ItemData topItem = inventory.Peek();
         if (topItem == null) return;
 
+        if (handPosition == null)
+        {
+            Debug.LogError("HandPosition is null in UpdateHand!");
+            return;
+        }
+
         handItemObject = new GameObject("HandItem");
         handItemObject.transform.SetParent(handPosition);
         handItemObject.transform.localPosition = Vector3.zero;
@@ -160,7 +158,8 @@ public class PlayerController : MonoBehaviour
         sr.sprite = topItem.Icon;
         sr.sortingOrder = 1;
 
-        sr.flipX = spriteRenderer.flipX;
+        if (spriteRenderer != null)
+            sr.flipX = spriteRenderer.flipX;
     }
 
     #endregion

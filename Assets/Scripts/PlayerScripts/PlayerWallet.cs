@@ -20,6 +20,10 @@ public class PlayerWallet : MonoBehaviour, IWalletAccess
     private void Awake()
     {
         purchasedZones = new List<string>();
+    }
+
+    private void Start()
+    {
         LoadWallet();
         UpdateUI();
     }
@@ -27,8 +31,7 @@ public class PlayerWallet : MonoBehaviour, IWalletAccess
     public int GetMoney()
     {
         return money;
-    } 
-        
+    }
 
     public bool SpendMoney(int amount)
     {
@@ -80,6 +83,12 @@ public class PlayerWallet : MonoBehaviour, IWalletAccess
 
     public void SaveWallet()
     {
+        if (SaveSystem.Instance == null)
+        {
+            Debug.LogWarning("SaveSystem not ready, wallet not saved");
+            return;
+        }
+
         WalletSaveData data = new WalletSaveData();
         data.money = money;
         data.purchasedZones = purchasedZones;
@@ -88,6 +97,12 @@ public class PlayerWallet : MonoBehaviour, IWalletAccess
 
     private void LoadWallet()
     {
+        if (SaveSystem.Instance == null)
+        {
+            Debug.LogWarning("SaveSystem not ready, wallet not loaded");
+            return;
+        }
+
         object raw = SaveSystem.Instance.LoadObject(SAVE_KEY);
         if (raw != null)
         {
@@ -95,16 +110,17 @@ public class PlayerWallet : MonoBehaviour, IWalletAccess
             if (data != null)
             {
                 money = data.money;
-                purchasedZones = data.purchasedZones?? new List<string>();
+                purchasedZones = data.purchasedZones ?? new List<string>();
                 UpdateUI();
                 Debug.Log($"Wallet loaded {money} money, {purchasedZones.Count} zones");
             }
         }
         else
         {
-            Debug.Log("No wallet save found");
+            Debug.Log("No wallet save found, starting fresh");
         }
     }
+
     private void OnApplicationQuit()
     {
         SaveWallet();
