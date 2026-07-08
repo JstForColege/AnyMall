@@ -10,7 +10,6 @@ public class CustomerSpawner : MonoBehaviour
     [SerializeField] private List<Transform> waypoints;
     [SerializeField] private Transform cashWaypoint;
 
-
     private void Start()
     {
         StartCoroutine(SpawnLoop());
@@ -28,19 +27,24 @@ public class CustomerSpawner : MonoBehaviour
     private void SpawnCustomer()
     {
         if (customerPrefab == null || spawnPoint == null) return;
+        if (waypoints == null || waypoints.Count == 0) return;
 
         GameObject newCustomer = Instantiate(customerPrefab, spawnPoint.position, Quaternion.identity);
         CustomerAI customerAI = newCustomer.GetComponent<CustomerAI>();
         if (customerAI != null)
         {
-            int count = Random.Range(2, waypoints.Count + 1);
+            int count = Mathf.Min(Random.Range(2, 4), waypoints.Count);
             List<Transform> selected = new List<Transform>();
+            List<Transform> available = new List<Transform>(waypoints);
+
             for (int i = 0; i < count; i++)
             {
-                Transform point = waypoints[Random.Range(0, waypoints.Count)];
-                if (!selected.Contains(point))
-                    selected.Add(point);
+                if (available.Count == 0) break;
+                int idx = Random.Range(0, available.Count);
+                selected.Add(available[idx]);
+                available.RemoveAt(idx);
             }
+
             customerAI.SetWaypoints(selected);
             customerAI.SetCashPoint(cashWaypoint);
         }
