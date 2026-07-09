@@ -131,6 +131,7 @@ public class UpgradeSystem : MonoBehaviour
         if (_wallet == null) return false;
         if (IsMaxLevel(type)) return false;
         int cost = GetNextLevelCost(type);
+        if (_wallet.GetMoney() >= cost) return true;
         return _wallet.GetMoney() >= cost;
     }
 
