@@ -9,6 +9,7 @@ public class UpgradeItemUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _costText;
     [SerializeField] private Button _upgradeButton;
 
+    private IWalletAccess _wallet;
     private UpgradeType _type;
 
     public void Initialize(UpgradeType type)
