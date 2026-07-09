@@ -7,6 +7,9 @@ public abstract class NPCBase : MonoBehaviour
     protected Transform exitPoint;
     protected bool hasStartedMoving = false;
 
+    [SerializeField] protected Animator animator;
+    [SerializeField] protected SpriteRenderer spriteRenderer;
+
     public abstract void UpdateState();
 
     protected virtual void Awake()
@@ -14,6 +17,12 @@ public abstract class NPCBase : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         if (agent == null)
             agent = gameObject.AddComponent<NavMeshAgent>();
+
+        if (animator == null)
+            animator = GetComponent<Animator>();
+
+        if (spriteRenderer == null)
+            spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
         GameObject exit = GameObject.FindGameObjectWithTag("ExitPoint");
         if (exit != null) exitPoint = exit.transform;
@@ -49,9 +58,26 @@ public abstract class NPCBase : MonoBehaviour
             MoveTo(exitPoint.position);
     }
 
+    protected virtual void UpdateAnimation()
+    {
+        if (animator == null) return;
+        bool isMoving = agent.isOnNavMesh && agent.velocity.magnitude > 0.1f;
+        animator.SetBool("isMoving", isMoving);
+        if (agent.isOnNavMesh)
+        {
+            float dirX = agent.velocity.x;
+            if (Mathf.Abs(dirX) > 0.1f)
+            {
+                spriteRenderer.flipX = dirX < 0;
+            }
+        }
+    }
+
     protected virtual void Update()
     {
         UpdateState();
+        UpdateAnimation();
+
         if (exitPoint != null && HasReachedTarget() && Vector3.Distance(transform.position, exitPoint.position) < 0.5f)
         {
             Destroy(gameObject);

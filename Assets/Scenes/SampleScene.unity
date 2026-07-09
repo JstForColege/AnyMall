@@ -5343,7 +5343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b609810cce209a4798b9dc186cdede8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CustomerSpawner
-  customerPrefab: {fileID: 2904187803794706772, guid: 36cb50382cb3e2547ad92301fc2f74b0, type: 3}
+  customerPrefab: {fileID: 8820314168347134779, guid: 36cb50382cb3e2547ad92301fc2f74b0, type: 3}
   spawnPoint: {fileID: 815839626}
   spawnInterval: 5
   waypoints:
@@ -9515,7 +9515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d3d3abe51f4a504493adc501c7fb344, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HooliganSpawner
-  hooliganPrefab: {fileID: 7000682416396397452, guid: f747adaac7044264a92e25e3261a6bd4, type: 3}
+  hooliganPrefab: {fileID: 2664763816425759990, guid: f747adaac7044264a92e25e3261a6bd4, type: 3}
   spawnPoint: {fileID: 815839626}
   minSpawnInterval: 30
   maxSpawnInterval: 60
@@ -10501,9 +10501,13 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5905621496577522845, guid: 502f1e0cff87c994a822854765fd3db3, type: 3}
+      propertyPath: m_SortingOrder
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8392956505085235821, guid: 502f1e0cff87c994a822854765fd3db3, type: 3}
       propertyPath: moveSpeed
-      value: 3
+      value: 1.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
