@@ -5,12 +5,12 @@ public abstract class NPCBase : MonoBehaviour
 {
     protected NavMeshAgent agent;
     protected Transform exitPoint;
+    protected bool hasStartedMoving = false;
 
     public abstract void UpdateState();
 
-    protected virtual void Start()
+    protected virtual void Awake()
     {
-
         agent = GetComponent<NavMeshAgent>();
         if (agent == null)
             agent = gameObject.AddComponent<NavMeshAgent>();
@@ -20,17 +20,27 @@ public abstract class NPCBase : MonoBehaviour
 
         agent.updateRotation = false;
         agent.updateUpAxis = false;
+        agent.stoppingDistance = 0.1f;
     }
 
     public void MoveTo(Vector3 target)
     {
-        if (agent != null && agent.isActiveAndEnabled)
+        if (agent != null && agent.isActiveAndEnabled && agent.isOnNavMesh)
+        {
             agent.SetDestination(target);
+            hasStartedMoving = true;
+        }
     }
 
     public bool HasReachedTarget()
     {
-        return agent.hasPath && agent.remainingDistance <= agent.stoppingDistance;
+        if (!hasStartedMoving)
+            return false;
+
+        if (agent == null || !agent.isActiveAndEnabled || !agent.isOnNavMesh)
+            return false;
+
+        return agent.remainingDistance <= agent.stoppingDistance + 0.1f;
     }
 
     public virtual void LeaveStore()

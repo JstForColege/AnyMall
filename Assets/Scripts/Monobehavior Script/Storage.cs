@@ -1,61 +1,56 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 public class Storage : MonoBehaviour
 {
-	[SerializeField]
-	private int _capacity;
-	[SerializeField]
-	private ItemData _item;
-	[SerializeField]
-	private Transform[] _storageSlots;
-    [SerializeField]
-    private GameObject _fruitPrefab;
+    #region приватные_поля
+    [SerializeField] private int _capacity;
+    [SerializeField] private ItemData _item;
+    [SerializeField] private Transform[] _storageSlots;
+    [SerializeField] private GameObject _fruitPrefab;
+    private GameObject[] _storagedFruits;
     private int _currentAmount;
-	public int CurrentAmount
-	{
-		get => _currentAmount;
-		set => _currentAmount = value;
-	}
-	public bool CanAdd(ItemData item)
-	{
-		if (item != _item)
-		{
-			return false;
-		}
-		if (_currentAmount >= _capacity)
-		{ 
-			return false;
-		}
-			
-		return true;
-	}
-	public bool AddItem(ItemData item)
-	{
-		if (!CanAdd(item))
-		{
-			return false;
-		}
-		StartCoroutine(AddCoroutine());
-		return true;
-	}
-	public ItemData RemoveItem()
-	{
-		if (_currentAmount <= 0)
-		{
-			return null;
-		}
-		-- _currentAmount;
-		return _item;
-	}
+    #endregion
+    #region добавить
+    public bool CanAdd(ItemData item) //сделать enum
+    {
+        if (item != _item)
+        {
+            return false;
+        }
+        if (_currentAmount >= _capacity)
+        {
+            return false;
+        }
 
-	public IEnumerator AddCoroutine()
-	{
-        yield return new WaitForSeconds(1);
-		++CurrentAmount;
-		Debug.Log("Фрукт на полкку");
-		Instantiate(_fruitPrefab, _storageSlots[_currentAmount].position, Quaternion.identity);
+        return true;
+    }
+    public bool AddItem(ItemData item)
+    {
+        if (!CanAdd(item))
+        {
+            return false;
+        }
+        StartCoroutine(AddCoroutine());
+        return true;
+    }
+    private IEnumerator AddCoroutine()
+    {
+        yield return new WaitForSeconds(0.3f);
+        Debug.Log("Фрукт на полку");
+        _storagedFruits[_currentAmount - 1] = Instantiate(_fruitPrefab, _storageSlots[_currentAmount].position, Quaternion.identity);
+        ++_currentAmount;
+    }
+    #endregion
+    public ItemData RemoveItem()
+    {
+        if (_currentAmount <= 0)
+        {
+            return null;
+        }
+        Destroy(_storagedFruits[_currentAmount - 1]);
+        --_currentAmount;
+        return _item;
     }
 }
 

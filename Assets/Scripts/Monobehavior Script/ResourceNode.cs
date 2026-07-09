@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class ResourceNode : MonoBehaviour
 {
@@ -18,29 +19,12 @@ public class ResourceNode : MonoBehaviour
     private GameObject[] _spawnedFruits;
     [SerializeField]
     private GameObject _fruitPrefab;
-    [SerializeField] 
+    [SerializeField]
     private ItemData _itemData;
 
     private bool _isGrowing = false;
     #endregion
-    #region публичные_свойства
-    public int Amount
-    {
-        get => _amount;
-        set => _amount = value;
-    }
-    public int CurrentAmount
-    {
-        get => _currentAmount;
-        set => _currentAmount = value;
-    }
-    public int Timer
-    {
-        get => _timer;
-        set => _timer = value;
-    }
-    #endregion
-
+    #region рост
     private void Grow()
     {
         _spawnedFruits = new GameObject[_fruitSpawns.Length];
@@ -52,20 +36,19 @@ public class ResourceNode : MonoBehaviour
     }
     private IEnumerator GrowCoroutine()
     {
-        while (CurrentAmount < Amount)
+        while (_currentAmount < _amount)
         {
-            yield return new WaitForSeconds(Timer);
-            ++CurrentAmount;
-            _spawnedFruits[CurrentAmount - 1] = Instantiate(_fruitPrefab, _fruitSpawns[CurrentAmount - 1].position, Quaternion.identity);
+            yield return new WaitForSeconds(_timer);
+            ++_currentAmount;
+            _spawnedFruits[_currentAmount - 1] = Instantiate(_fruitPrefab, _fruitSpawns[_currentAmount - 1].position, Quaternion.identity);
         }
         _isGrowing = false;
     }
-
     private void Start()
     {
         Grow();
     }
-
+    #endregion
     public ItemData Harvest()
     {
         if (_currentAmount <= 0)
@@ -73,9 +56,8 @@ public class ResourceNode : MonoBehaviour
             Debug.Log("Нет плодов для сбора");
             return null;
         }
-
-        -- _currentAmount;
-        Destroy(_spawnedFruits[CurrentAmount]);
+        --_currentAmount;
+        Destroy(_spawnedFruits[_currentAmount]);
         _spawnedFruits[_currentAmount] = null;
         return _itemData;
     }

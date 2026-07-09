@@ -1,94 +1,141 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    Rigidbody2D body;
-    public float moveSpeed = 6f;
-    float XAxis, YAxis;
-    Vector3 size;
-    public Animator anim;
+    [Header("Компоненты")]
+    [SerializeField] private Rigidbody2D body;
+    [SerializeField] private Animator animator;
+    [SerializeField] private SpriteRenderer spriteRenderer;
 
+    [Header("Движение")]
+    [SerializeField] private float moveSpeed = 6f;
+
+    [Header("Инвентарь и руки")]
     [SerializeField] private PlayerInventory inventory;
     [SerializeField] private Transform handPosition;
 
+    private Vector2 moveInput;
     private GameObject handItemObject;
+    private bool isMoving = false;
 
-    void Start()
+    private void Start()
     {
-        inventory = new PlayerInventory(3);
-        body = GetComponent<Rigidbody2D>();
-        size = gameObject.transform.localScale;
-        if (inventory == null)
-            inventory = new PlayerInventory(1);
+        if (body == null)
+            body = GetComponent<Rigidbody2D>();
+
+        if (animator == null)
+            animator = GetComponent<Animator>();
+
+        if (spriteRenderer == null)
+            spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+
+        inventory = new PlayerInventory(inventory.MaxSize);
+
+        if (handPosition == null)
+            Debug.LogError("HandPosition не назначен в инспекторе!");
+
         UpdateHand();
+        Debug.Log($"MaxSize = {inventory.MaxSize}");
     }
 
-    void Update()
+    private void Update()
     {
-        Move();
+        HandleInput();
+        UpdateSpriteFlip();
+        UpdateAnimation();
     }
 
-    void Move()
+    private void FixedUpdate()
     {
-        XAxis = Input.GetAxis("Horizontal");
-        YAxis = Input.GetAxis("Vertical");
-        bool isMoving = body.linearVelocity.magnitude > 0.1f;
-        anim.SetBool("isMoving", isMoving);
-        body.linearVelocity = new Vector2(XAxis * moveSpeed, YAxis * moveSpeed);
-        if (XAxis > 0)
-        {
-            gameObject.transform.localScale = size;
-        }
-        if (XAxis < 0)
-        {
-            gameObject.transform.localScale = new Vector3(-size.x, size.y, size.z);
-        }
+        ApplyMovement();
     }
+
+    #region Движение
+
+    private void HandleInput()
+    {
+        moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        isMoving = moveInput.magnitude > 0.1f;
+    }
+
+    private void UpdateSpriteFlip()
+    {
+        if (spriteRenderer == null) return;
+        if (moveInput.x > 0)
+            spriteRenderer.flipX = false;
+        else if (moveInput.x < 0)
+            spriteRenderer.flipX = true;
+    }
+
+    private void ApplyMovement()
+    {
+        if (body != null)
+            body.linearVelocity = moveInput * moveSpeed;
+    }
+
+    #endregion
+
+    #region Анимация
+
+    private void UpdateAnimation()
+    {
+        if (animator != null)
+            animator.SetBool("isMoving", isMoving);
+    }
+
+    #endregion
+
+    #region Взаимодействие
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        ResourceNode node = other.GetComponent<ResourceNode>();
-        if (node != null)
+        if (other.TryGetComponent(out ResourceNode node))
         {
+            if (inventory.IsFull) return;
             ItemData item = node.Harvest();
             if (item != null)
             {
-                bool added = inventory.Push(item);
-                if (added)
-                {
-                    UpdateHand();
-                }
+                if (!inventory.Push(item)) return;
+                UpdateHand();
+            }
+            return;
+        }
+        if (other.TryGetComponent(out Storage shelf))
+        {
+            if (inventory.IsEmpty) return;
+            ItemData item = inventory.Peek();
+            if (shelf.AddItem(item))
+            {
+                inventory.Pop();
+                UpdateHand();
             }
         }
+
+        HooliganAI hooligan = other.GetComponent<HooliganAI>();
+        if (hooligan != null)
+        {
+            bool chased = hooligan.TryChaseAway();
+            if (chased)
+            {
+                Debug.Log("Игрок: Прогнан");
+            }
+            else
+            {
+                Debug.Log("Игрок: Хулиган ещё не у стеллажа!");
+            }
+            return;
+        }
+        // надо: взаимодействие с другими объектами через IInteractable
     }
 
-    private void UpdateHand()
+    #endregion
+
+    #region Инвентарь и руки
+
+    public PlayerInventory GetInventory()
     {
-        if (handItemObject != null)
-        {
-            Destroy(handItemObject);
-            handItemObject = null;
-        }
-
-        if (!inventory.IsEmpty)
-        {
-            ItemData topItem = inventory.Peek();
-            if (topItem != null)
-            {
-                handItemObject = new GameObject("HandItem");
-                handItemObject.transform.SetParent(handPosition);
-                handItemObject.transform.localPosition = Vector3.zero;
-                handItemObject.transform.localScale = Vector3.one;
-
-                SpriteRenderer sr = handItemObject.AddComponent<SpriteRenderer>();
-                sr.sprite = topItem.Icon;
-                sr.sortingOrder = 1;
-            }
-        }
-        else
-        {
-            Debug.Log("Рука пуста");
-        }
+        return inventory;
     }
 
     public void RefreshHand()
@@ -96,8 +143,47 @@ public class PlayerController : MonoBehaviour
         UpdateHand();
     }
 
-    public PlayerInventory GetInventory()
+    private void UpdateHand()
     {
-        return inventory;
+        if (inventory == null)
+        {
+            Debug.LogError("Inventory is null in UpdateHand!");
+            return;
+        }
+
+        if (handItemObject != null)
+        {
+            Destroy(handItemObject);
+            handItemObject = null;
+        }
+
+        if (inventory.IsEmpty)
+        {
+            Debug.Log("Рука пуста");
+            return;
+        }
+
+        ItemData topItem = inventory.Peek();
+        if (topItem == null) return;
+
+        if (handPosition == null)
+        {
+            Debug.LogError("HandPosition is null in UpdateHand!");
+            return;
+        }
+
+        handItemObject = new GameObject("HandItem");
+        handItemObject.transform.SetParent(handPosition);
+        handItemObject.transform.localPosition = Vector3.zero;
+        handItemObject.transform.localScale = Vector3.one;
+
+        SpriteRenderer sr = handItemObject.AddComponent<SpriteRenderer>();
+        sr.sprite = topItem.Icon;
+        sr.sortingOrder = 1;
+
+        if (spriteRenderer != null)
+            sr.flipX = spriteRenderer.flipX;
     }
+
+    #endregion
 }

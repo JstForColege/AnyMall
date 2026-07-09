@@ -16,75 +16,24 @@ public class Producer : MonoBehaviour
     private bool _isWorking = true;
     private string _name;
     #endregion
-    #region публичные_свойства
-    public ResourceFood Ingridient
-    {
-        get => _ingridient;
-        set => _ingridient = value;
-    }
-    public int MaxIngridient
-    {
-        get => _maxIngridient;
-        set => _maxIngridient = value;
-    }
-    public int CurrentIngridient
-    {
-        get => _currentIngridient;
-        set => _currentIngridient = value;
-    }
-
-    public ResourceFood Outgridient
-    {
-        get => _outgridient;
-        set => _outgridient = value;
-    }
-    public int MaxOutgridient
-    {
-        get => _maxOutgridient;
-        set => _maxOutgridient = value;
-    }
-    public int CurrentOutgridient
-    {
-        get => _currentOutgridient;
-        set => _currentIngridient = value;
-    }
-
-    public int MakingTime
-    {
-        get => _makingTime;
-        set => _makingTime = value;
-    }
-    public bool IsWorking
-    {
-        get => _isWorking;
-        set => _isWorking = value;
-    }
-    public string Name
-    {
-        get => _name;
-        set => _name = value;
-    }
-    #endregion
-
-
     public void Produce()
     {
-        if (IsWorking == true)
+        if (_isWorking == true)
         {
             StartCoroutine(ProduceCoroutine());
         }
         else
         {
-            Debug.Log($"{Name} не работает!");
+            Debug.Log($"{_name} не работает!");
         }
     }
     public IEnumerator ProduceCoroutine()
     {
-        while (CurrentOutgridient < MaxOutgridient && CurrentIngridient > 0)
+        while (_currentIngridient < _maxIngridient && _currentIngridient > 0)
         {
-            --CurrentIngridient;
-            yield return new WaitForSeconds(MakingTime);
-            ++CurrentOutgridient;
+            --_currentIngridient;
+            yield return new WaitForSeconds(_makingTime);
+            ++_currentOutgridient;
         }
     }
 }
