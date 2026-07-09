@@ -9,10 +9,7 @@ public class ResourceNode : MonoBehaviour
     private int _amount;
     [SerializeField]
     private int _timer;
-
     private int _currentAmount = 0;
-    [SerializeField]
-    private ItemData _food;
 
     [SerializeField]
     private Transform[] _fruitSpawns;

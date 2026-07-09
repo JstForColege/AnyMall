@@ -106,6 +106,7 @@ public class PlayerController : MonoBehaviour
             if (inventory.IsEmpty) return;
             Debug.Log("Вижу полку");
             ItemData item = inventory.Peek();
+            Debug.Log(item.Type + "aaaaaaaaaaaaaaaaaaaaaaa");
             if (shelf.AddItem(item))
             {
                 inventory.Pop();
@@ -128,12 +129,26 @@ public class PlayerController : MonoBehaviour
             }
             return;
         }
+
         // надо: взаимодействие с другими объектами через IInteractable
     }
 
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.TryGetComponent(out CashRegister cashRegister))
+        {
+            bool served = cashRegister.TryServeNextCustomer();
+            if (served)
+            {
+                Debug.Log("Player: Served customer at cash!");
+            }
+            return;
+        }
+
+    }
     #endregion
 
-    #region Инвентарь и руки
+        #region Инвентарь и руки
 
     public PlayerInventory GetInventory()
     {

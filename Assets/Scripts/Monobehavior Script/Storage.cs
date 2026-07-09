@@ -38,8 +38,8 @@ public class Storage : MonoBehaviour
     {
         yield return new WaitForSeconds(0.3f);
         Debug.Log("Фрукт на полку");
-        //Debug.Log($"{_currentAmount}");
-        //Debug.Log($"{_storageSlots.Length}");
+        Debug.Log($"{_currentAmount}");
+        Debug.Log($"{_storageSlots.Length}");
         Debug.Log(_storagedFruits == null);
         _storagedFruits[_currentAmount] = Instantiate(_fruitPrefab, _storageSlots[_currentAmount].position, Quaternion.identity);
         ++_currentAmount;
