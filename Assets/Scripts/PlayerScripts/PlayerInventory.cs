@@ -17,6 +17,11 @@ public class PlayerInventory
     public bool IsFull => stack.Count >= maxSize;
     public bool IsEmpty => stack.Count == 0;
 
+    public void SetMaxSize(int newSize)
+    {
+        maxSize = newSize;
+    }
+
     public bool Push(ItemData item)
     {
         if (IsFull)
