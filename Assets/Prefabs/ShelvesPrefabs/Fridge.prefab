@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 4527132037641255285}
   - component: {fileID: 8480622327362308388}
   - component: {fileID: 7988616815741831891}
-  - component: {fileID: 7363291615499459471}
   m_Layer: 0
   m_Name: Fridge
   m_TagString: Shelf
@@ -218,35 +217,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Storage
   _capacity: 0
   _item:
-    Id: 
-    Name: 
+    Type: 0
     Icon: {fileID: 0}
   _storageSlots: []
   _fruitPrefab: {fileID: 0}
---- !u!114 &7363291615499459471
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5165127176951829073}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc573b8209ee9e9428ebf753d083334f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Storage
-  _capacity: 12
-  _item:
-    Id: 
-    Name: 
-    Icon: {fileID: 0}
-  _storageSlots:
-  - {fileID: 6838108226208809691, guid: 9e9a231ac9628ca43ba84e8d7e10e0af, type: 3}
-  - {fileID: 6658733621993066303, guid: 9e9a231ac9628ca43ba84e8d7e10e0af, type: 3}
-  - {fileID: 8571768308694683914, guid: 9e9a231ac9628ca43ba84e8d7e10e0af, type: 3}
-  - {fileID: 2339185721409571520, guid: 9e9a231ac9628ca43ba84e8d7e10e0af, type: 3}
-  - {fileID: 7790267975828901562, guid: 9e9a231ac9628ca43ba84e8d7e10e0af, type: 3}
-  - {fileID: 8680758360128354775, guid: 9e9a231ac9628ca43ba84e8d7e10e0af, type: 3}
-  - {fileID: 7665438498809703017, guid: 9e9a231ac9628ca43ba84e8d7e10e0af, type: 3}
-  - {fileID: 1283888714368130314, guid: 9e9a231ac9628ca43ba84e8d7e10e0af, type: 3}
-  _fruitPrefab: {fileID: 1075650083777188959, guid: 271c096a56a6bc547a0196cc532c1a77, type: 3}
