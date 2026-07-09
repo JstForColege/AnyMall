@@ -187,14 +187,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ResourceNode
   _amount: 1
   _timer: 3
+  _food:
+    Type: 1
+    Icon: {fileID: 0}
   _fruitSpawns:
   - {fileID: 173686120932565228}
   - {fileID: 7839147299835253783}
   - {fileID: 5884942962423151475}
   _fruitPrefab: {fileID: 1075650083777188959, guid: a05ba72d28fb3bd409a3882f5a391545, type: 3}
   _itemData:
-    Id: 
-    Name: 
+    Type: 0
     Icon: {fileID: 0}
 --- !u!1 &3236696643503348208
 GameObject:

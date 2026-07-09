@@ -104,11 +104,13 @@ public class PlayerController : MonoBehaviour
         if (other.TryGetComponent(out Storage shelf))
         {
             if (inventory.IsEmpty) return;
+            Debug.Log("Вижу полку");
             ItemData item = inventory.Peek();
             if (shelf.AddItem(item))
             {
                 inventory.Pop();
                 UpdateHand();
+                Debug.Log("выложил");
             }
         }
 

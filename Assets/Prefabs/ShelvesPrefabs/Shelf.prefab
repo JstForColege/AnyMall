@@ -201,7 +201,7 @@ GameObject:
   - component: {fileID: 1764125562817883619}
   - component: {fileID: 3653942279561050469}
   m_Layer: 0
-  m_Name: ShelfBanana
+  m_Name: Shelf
   m_TagString: Shelf
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -427,7 +427,7 @@ MonoBehaviour:
   - {fileID: 8680758360128354775}
   - {fileID: 7665438498809703017}
   - {fileID: 1283888714368130314}
-  - {fileID: 0}
+  - {fileID: 6130829064465096936}
   - {fileID: 6077124327757262946}
   - {fileID: 2228038231602102120}
   - {fileID: 2548176055420911907}
