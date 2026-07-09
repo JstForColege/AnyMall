@@ -909,6 +909,7 @@ GameObject:
   - component: {fileID: 102403359}
   - component: {fileID: 102403358}
   - component: {fileID: 102403357}
+  - component: {fileID: 102403361}
   - component: {fileID: 102403360}
   m_Layer: 0
   m_Name: Cash
@@ -929,7 +930,8 @@ Transform:
   m_LocalPosition: {x: -5.669, y: 1.3850002, z: 0}
   m_LocalScale: {x: 0.6184446, y: 1.4066242, z: 0.2614616}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 171122817}
   m_Father: {fileID: 212433192}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &102403357
@@ -1099,6 +1101,20 @@ MonoBehaviour:
   m_Area: 1
   m_IgnoreFromBuild: 0
   m_AffectedAgents: ffffffff
+--- !u!114 &102403361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 102403355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0343177f54c712141ba791daf4b784ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CashRegister
+  queuePosition: {fileID: 171122817}
+  queueSpacing: 0.4
 --- !u!1 &105875135
 GameObject:
   m_ObjectHideFlags: 0
@@ -1640,6 +1656,37 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 1}
   m_SizeDelta: {x: -20, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &171122816
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 171122817}
+  m_Layer: 0
+  m_Name: QueuePosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &171122817
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 171122816}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.978, y: 0.129, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 102403356}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &189324051
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1881,9 +1928,9 @@ Transform:
   - {fileID: 1450795283}
   - {fileID: 1967799103}
   - {fileID: 550241914}
-  - {fileID: 1053175935}
   - {fileID: 1127325449}
   - {fileID: 1995889233}
+  - {fileID: 1053175935}
   - {fileID: 19173017}
   - {fileID: 1185288640}
   - {fileID: 851262997}
@@ -3746,8 +3793,8 @@ Transform:
   m_GameObject: {fileID: 602963233}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.427, y: 1.975, z: -5.12728}
-  m_LocalScale: {x: 0.17615952, y: 0.7595719, z: 1}
+  m_LocalPosition: {x: 5.2734, y: 1.975, z: -5.12728}
+  m_LocalScale: {x: 0.48339933, y: 0.7595719, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 851262997}
@@ -5719,11 +5766,11 @@ MonoBehaviour:
   spawnInterval: 5
   waypoints:
   - {fileID: 1967799103}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 550241914}
+  - {fileID: 1127325449}
+  - {fileID: 1995889233}
+  - {fileID: 1053175935}
+  - {fileID: 19173017}
   cashWaypoint: {fileID: 102403356}
   maxCustomers: 7
 --- !u!1001 &1053175934
@@ -9628,12 +9675,12 @@ MonoBehaviour:
   minSpawnInterval: 30
   maxSpawnInterval: 60
   shelves:
-  - {fileID: 0}
   - {fileID: 1967799103}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 550241914}
+  - {fileID: 1127325449}
+  - {fileID: 1995889233}
+  - {fileID: 1053175935}
+  - {fileID: 19173017}
 --- !u!4 &1928340817
 Transform:
   m_ObjectHideFlags: 0

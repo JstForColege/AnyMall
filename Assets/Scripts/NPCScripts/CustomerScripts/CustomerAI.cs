@@ -13,6 +13,8 @@ public class CustomerAI : NPCBase
     private float waitDuration = 1.5f;
 
     private CustomerSpawner spawner;
+    private CashRegister cashRegister;
+    private bool isRegistered = false;
 
     public void SetWaypoints(List<Transform> points)
     {
@@ -62,6 +64,14 @@ public class CustomerAI : NPCBase
     public void SetCashPoint(Transform point)
     {
         cashPoint = point;
+
+        // Находим компонент CashRegister на точке кассы
+        if (cashPoint != null)
+        {
+            cashRegister = cashPoint.GetComponent<CashRegister>();
+            if (cashRegister == null)
+                Debug.LogWarning("CashRegister component not found on cash point!");
+        }
     }
 
     public void SetSpawner(CustomerSpawner spawnerRef)
@@ -124,24 +134,41 @@ public class CustomerAI : NPCBase
             case State.MovingToCash:
                 if (HasReachedTarget())
                 {
-                    currentState = State.WaitingAtCash;
-                    Debug.Log("Customer: Waiting at cash");
+                    if (!isRegistered && cashRegister != null)
+                    {
+                        cashRegister.RegisterCustomer(this);
+                        isRegistered = true;
+                        currentState = State.WaitingAtCash;
+                        Debug.Log("Customer: Registered at cash, waiting in queue");
+                    }
+                    else
+                    {
+                        currentState = State.WaitingAtCash;
+                    }
                 }
                 break;
 
             case State.WaitingAtCash:
+                // Ждём своей очереди
                 break;
         }
     }
 
     public void OnPaymentDone()
     {
+        // Перед уходом говорим спавнеру, что мы уходим
+        if (spawner != null)
+        {
+            spawner.OnCustomerLeft(this);
+        }
+
         LeaveStore();
         Debug.Log("Customer: Payment done, leaving");
     }
 
     private void OnDestroy()
     {
+        // Уведомляем спавнер (если ещё не уведомили через OnPaymentDone)
         if (spawner != null)
         {
             spawner.OnCustomerLeft(this);
