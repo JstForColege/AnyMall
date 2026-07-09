@@ -16,7 +16,6 @@ public class CustomerAI : NPCBase
 
     public void SetWaypoints(List<Transform> points)
     {
-        // Ждём, пока агент инициализируется
         if (agent == null)
         {
             StartCoroutine(DelayedSetWaypoints(points));

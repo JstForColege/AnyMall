@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: e9986c7f4c70f04419782fa006586a65
+guid: d1e557f21fcef6449b71af360fa0f2a1
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3132057439438444439
-    second: walk (2)_0
+      213: 5557910125046394330
+    second: idle (3)_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -74,7 +74,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: walk (2)_0
+      name: idle (3)_0
       rect:
         serializedVersion: 2
-        x: 201
-        y: 149
-        width: 110
-        height: 170
+        x: 204
+        y: 151
+        width: 106
+        height: 172
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 79719d595ad477b20800000000000000
-      internalID: 3132057439438444439
+      spriteID: addefe8cfc9a12d40800000000000000
+      internalID: 5557910125046394330
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      walk (2)_0: 3132057439438444439
+      idle (3)_0: 5557910125046394330
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -4,7 +4,7 @@ using UnityEngine;
 [System.Serializable]
 public class PlayerInventory
 {
-    [SerializeField] private int maxSize = 1;
+    [SerializeField] private int maxSize = 3;
     private Stack<ItemData> stack = new Stack<ItemData>();
 
     public PlayerInventory(int initialMaxSize = 1)

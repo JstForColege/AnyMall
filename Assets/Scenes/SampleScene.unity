@@ -5204,7 +5204,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b609810cce209a4798b9dc186cdede8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CustomerSpawner
-  customerPrefab: {fileID: 2904187803794706772, guid: 36cb50382cb3e2547ad92301fc2f74b0, type: 3}
+  customerPrefab: {fileID: 8820314168347134779, guid: 36cb50382cb3e2547ad92301fc2f74b0, type: 3}
   spawnPoint: {fileID: 815839626}
   spawnInterval: 5
   waypoints:
@@ -9487,7 +9487,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d3d3abe51f4a504493adc501c7fb344, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HooliganSpawner
-  hooliganPrefab: {fileID: 7000682416396397452, guid: f747adaac7044264a92e25e3261a6bd4, type: 3}
+  hooliganPrefab: {fileID: 2664763816425759990, guid: f747adaac7044264a92e25e3261a6bd4, type: 3}
   spawnPoint: {fileID: 815839626}
   minSpawnInterval: 30
   maxSpawnInterval: 60
@@ -10023,43 +10023,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 83f2659e8b84c8a408b96571165cd5f0, type: 3}
---- !u!114 &5235495907274559414
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2063090053655022608}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7ce6df1757ddcb44817f2ca25db19cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CustomerAI
-  waypoints: []
-  cashPoint: {fileID: 0}
-  currentWaypointIndex: 0
---- !u!195 &5506767739586753099
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2063090053655022608}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 1
-  m_BaseOffset: 0.5
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 3
 --- !u!1001 &5870404184185896821
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10189,9 +10152,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 8392956505085235821, guid: 502f1e0cff87c994a822854765fd3db3, type: 3}
-      propertyPath: moveSpeed
-      value: 3
     - target: {fileID: 5394032395737255802, guid: 502f1e0cff87c994a822854765fd3db3, type: 3}
       propertyPath: m_Size.y
       value: 0.24015558
@@ -10203,6 +10163,14 @@ PrefabInstance:
     - target: {fileID: 5394032395737255802, guid: 502f1e0cff87c994a822854765fd3db3, type: 3}
       propertyPath: m_IsTrigger
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5905621496577522845, guid: 502f1e0cff87c994a822854765fd3db3, type: 3}
+      propertyPath: m_SortingOrder
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8392956505085235821, guid: 502f1e0cff87c994a822854765fd3db3, type: 3}
+      propertyPath: moveSpeed
+      value: 1.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
