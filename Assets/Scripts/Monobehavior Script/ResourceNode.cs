@@ -24,7 +24,6 @@ public class ResourceNode : MonoBehaviour
     #region рост
     private void Grow()
     {
-        _spawnedFruits = new GameObject[_fruitSpawns.Length];
         if (!_isGrowing)
         {
             _isGrowing = true;
@@ -37,12 +36,14 @@ public class ResourceNode : MonoBehaviour
         {
             yield return new WaitForSeconds(_timer);
             ++_currentAmount;
-            _spawnedFruits[_currentAmount - 1] = Instantiate(_fruitPrefab, _fruitSpawns[_currentAmount - 1].position, Quaternion.identity);
+            _spawnedFruits[_currentAmount - 1] = 
+                Instantiate(_fruitPrefab, _fruitSpawns[_currentAmount - 1].position, Quaternion.identity);
         }
         _isGrowing = false;
     }
     private void Start()
     {
+        _spawnedFruits = new GameObject[_fruitSpawns.Length];
         Grow();
     }
     #endregion
@@ -56,6 +57,7 @@ public class ResourceNode : MonoBehaviour
         --_currentAmount;
         Destroy(_spawnedFruits[_currentAmount]);
         _spawnedFruits[_currentAmount] = null;
+        if (_currentAmount < _amount && !_isGrowing) Grow();
         return _itemData;
     }
 }
