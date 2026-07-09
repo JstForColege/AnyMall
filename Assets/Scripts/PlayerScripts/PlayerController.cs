@@ -106,7 +106,6 @@ public class PlayerController : MonoBehaviour
             if (inventory.IsEmpty) return;
             Debug.Log("Вижу полку");
             ItemData item = inventory.Peek();
-            Debug.Log(item.Type + "aaaaaaaaaaaaaaaaaaaaaaa");
             if (shelf.AddItem(item))
             {
                 inventory.Pop();

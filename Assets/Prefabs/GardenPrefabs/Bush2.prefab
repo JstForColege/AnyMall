@@ -191,7 +191,7 @@ MonoBehaviour:
   - {fileID: 173686120932565228}
   - {fileID: 7839147299835253783}
   - {fileID: 5884942962423151475}
-  _fruitPrefab: {fileID: 1075650083777188959, guid: a05ba72d28fb3bd409a3882f5a391545, type: 3}
+  _fruitPrefab: {fileID: 7134212931437471658, guid: 295b1ffa13983e04caee9cf0fb95b264, type: 3}
   _itemData:
     Type: 1
     Icon: {fileID: 0}

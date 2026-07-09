@@ -5,19 +5,13 @@ using UnityEngine.UIElements;
 public class ResourceNode : MonoBehaviour
 {
     #region приватные_поля
-    [SerializeField]
-    private int _amount;
-    [SerializeField]
-    private int _timer;
+    [SerializeField] private int _amount;
+    [SerializeField] private int _timer;
     private int _currentAmount = 0;
-
-    [SerializeField]
-    private Transform[] _fruitSpawns;
     private GameObject[] _spawnedFruits;
-    [SerializeField]
-    private GameObject _fruitPrefab;
-    [SerializeField]
-    private ItemData _itemData;
+    [SerializeField] private Transform[] _fruitSpawns;
+    [SerializeField] private GameObject _fruitPrefab;
+    [SerializeField] private ItemData _itemData;
 
     private bool _isGrowing = false;
     #endregion

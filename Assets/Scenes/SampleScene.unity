@@ -283,6 +283,10 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7988616815741831891, guid: 228109c5a137b7341bcbe9e23ec44550, type: 3}
+      propertyPath: _fruitPrefab
+      value: 
+      objectReference: {fileID: 8446785023549379210, guid: 286e2b305649202479529b28ae3397a9, type: 3}
+    - target: {fileID: 7988616815741831891, guid: 228109c5a137b7341bcbe9e23ec44550, type: 3}
       propertyPath: _storageSlots.Array.size
       value: 9
       objectReference: {fileID: 0}
@@ -3507,7 +3511,7 @@ PrefabInstance:
     - target: {fileID: 3653942279561050469, guid: 9e9a231ac9628ca43ba84e8d7e10e0af, type: 3}
       propertyPath: _fruitPrefab
       value: 
-      objectReference: {fileID: 1075650083777188959, guid: a05ba72d28fb3bd409a3882f5a391545, type: 3}
+      objectReference: {fileID: 7134212931437471658, guid: 295b1ffa13983e04caee9cf0fb95b264, type: 3}
     - target: {fileID: 3653942279561050469, guid: 9e9a231ac9628ca43ba84e8d7e10e0af, type: 3}
       propertyPath: _storageSlots.Array.size
       value: 15
@@ -5741,7 +5745,7 @@ PrefabInstance:
     - target: {fileID: 3653942279561050469, guid: 9e9a231ac9628ca43ba84e8d7e10e0af, type: 3}
       propertyPath: _fruitPrefab
       value: 
-      objectReference: {fileID: 1075650083777188959, guid: a05ba72d28fb3bd409a3882f5a391545, type: 3}
+      objectReference: {fileID: 2552453473018231545, guid: 257648f6ba0f76b48b41b7199fb57059, type: 3}
     - target: {fileID: 3966460949643416820, guid: 9e9a231ac9628ca43ba84e8d7e10e0af, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.7924036
@@ -6327,6 +6331,10 @@ PrefabInstance:
       propertyPath: _item.Type
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 3653942279561050469, guid: 9e9a231ac9628ca43ba84e8d7e10e0af, type: 3}
+      propertyPath: _fruitPrefab
+      value: 
+      objectReference: {fileID: 5766754682688196479, guid: 245abe41415072d458e9a4f1fb8a79d4, type: 3}
     - target: {fileID: 3653942279561050469, guid: 9e9a231ac9628ca43ba84e8d7e10e0af, type: 3}
       propertyPath: _storageSlots.Array.size
       value: 9
@@ -9820,6 +9828,10 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7988616815741831891, guid: 228109c5a137b7341bcbe9e23ec44550, type: 3}
+      propertyPath: _fruitPrefab
+      value: 
+      objectReference: {fileID: 7858082322376263119, guid: 86267c9186bf7e44cb9a6db919e1c018, type: 3}
+    - target: {fileID: 7988616815741831891, guid: 228109c5a137b7341bcbe9e23ec44550, type: 3}
       propertyPath: _storageSlots.Array.size
       value: 9
       objectReference: {fileID: 0}
@@ -9859,22 +9871,6 @@ PrefabInstance:
       propertyPath: '_storageSlots.Array.data[8]'
       value: 
       objectReference: {fileID: 2057363291}
-    - target: {fileID: 0}
-      propertyPath: _capacity
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: _fruitPrefab
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: _storageSlots.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7988616815741831891, guid: 228109c5a137b7341bcbe9e23ec44550, type: 3}
-      propertyPath: _item.Type
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 8253552443934159278, guid: 228109c5a137b7341bcbe9e23ec44550, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.3382757
