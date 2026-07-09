@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private SpriteRenderer spriteRenderer;
 
     [Header("Движение")]
-    [SerializeField] private float moveSpeed = 6f;
+    [SerializeField] private float moveSpeed = 3f;
 
     [Header("Инвентарь и руки")]
     [SerializeField] private PlayerInventory inventory;
@@ -42,13 +42,13 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         HandleInput();
-        UpdateSpriteFlip();
-        UpdateAnimation();
+        SpriteFlip();
+        Animation();
     }
 
     private void FixedUpdate()
     {
-        ApplyMovement();
+        Move();
     }
 
     #region Движение
@@ -59,7 +59,7 @@ public class PlayerController : MonoBehaviour
         isMoving = moveInput.magnitude > 0.1f;
     }
 
-    private void UpdateSpriteFlip()
+    private void SpriteFlip()
     {
         if (spriteRenderer == null) return;
         if (moveInput.x > 0)
@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour
             spriteRenderer.flipX = true;
     }
 
-    private void ApplyMovement()
+    private void Move()
     {
         if (body != null)
             body.linearVelocity = moveInput * moveSpeed;
@@ -78,7 +78,7 @@ public class PlayerController : MonoBehaviour
 
     #region Анимация
 
-    private void UpdateAnimation()
+    private void Animation()
     {
         if (animator != null)
             animator.SetBool("isMoving", isMoving);
