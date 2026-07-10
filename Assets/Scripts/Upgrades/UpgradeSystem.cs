@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -80,90 +81,73 @@ using UnityEngine;
 //        // также обновляем UI инвентаря, если нужно
 //    }
 //
-// 
-// 8. КАК УЗНАТЬ ОБ ИЗМЕНЕНИИ УРОВНЯ (СОБЫТИЕ OnUpgradeApplied)
-//     UpgradeSystem вызывает событие OnUpgradeApplied каждый раз, когда уровень улучшения повышается
-//     Это позволяет другим системам (PlayerController, WorldObjects) мгновенно реагировать на изменения,
-//     не опрашивая уровни постоянно
-// 
-//     Чтобы подписаться на событие, добавьте в свой скрипт:
-//       UpgradeSystem.Instance.OnUpgradeApplied += OnUpgradeApplied;
-// 
+// 8. КАК УЗНАТЬ ОБ ИЗМЕНЕНИИ КОНКРЕТНОГО УЛУЧШЕНИЯ (СОБЫТИЯ ДЛЯ КАЖДОГО ТИПА)
+//     Вместо одного общего события, в UpgradeSystem реализован словарь событий,
+//     где каждое событие соответствует своему типу улучшения
+//     Это позволяет подписываться ТОЛЬКО на те улучшения, которые нужны вашей системе,
+//     что повышает производительность и снижает количество лишних проверок
+//
+//     Чтобы подписаться на событие для конкретного типа, используйте метод Subscribe:
+//       UpgradeSystem.Instance.Subscribe(UpgradeType.PLAYER_INVENTORY, OnInventoryUpgraded);
+//
 //     Пример подписки в PlayerController:
 //       private void Start()
 //       {
-//           if (UpgradeSystem.Instance != null)
-//           {
-//               UpgradeSystem.Instance.OnUpgradeApplied += OnUpgradeApplied;
-//           }
-//           ApplyInventoryUpgrade();
-//       }
-// 
-//     Пример обработки события:
-//       private void OnUpgradeApplied(UpgradeType type, int newLevel)
-//       {
-//           if (type == UpgradeType.PLAYER_INVENTORY)
-//           {
-//               ApplyInventoryUpgrade();
-//           }
-//       }
-// 
-//       private void ApplyInventoryUpgrade()
-//       {
+//           UpgradeSystem.Instance.Subscribe(UpgradeType.PLAYER_INVENTORY, OnInventoryUpgraded);
+//           // Применяем текущий уровень при старте
 //           int level = UpgradeSystem.Instance.GetCurrentLevel(UpgradeType.PLAYER_INVENTORY);
-//           _maxInventorySize = 1 + level; // базовый размер 1, каждый уровень +1
-//           Debug.Log($"Inventory size updated to {_maxInventorySize}");
+//           OnInventoryUpgraded(level);
 //       }
-// 
-// 9. ПРИМЕНЕНИЕ ВСЕХ ЭФФЕКТОВ ПРИ СТАРТЕ (ApplyAllUpgrades)
-//     При загрузке игры все системы должны применить текущие уровни прокачки
-//     Для этого в UpgradeSystem есть метод ApplyAllUpgrades(), который вызывает событие
-//     OnUpgradeApplied для каждого типа улучшения
-// 
-//     Вызовите этот метод в Start() UpgradeSystem после загрузки уровней:
-//       private void Start()
+//
+//     Пример обработки события:
+//       private void OnInventoryUpgraded(int newLevel)
 //       {
-//           LoadLevels();
-//           ApplyAllUpgrades(); // все системы обновят свои эффекты
+//           _maxInventorySize = 3 + newLevel; // базовый размер 1, каждый уровень +1
+//           Debug.Log($"Inventory size updated to {_maxInventorySize}");
+//           // Обновляем UI, если нужно
 //       }
-// 
-//     Это гарантирует, что при старте игры все эффекты применены корректно,
-//     даже если игрок не нажимал кнопку улучшения
-// 
-// 10. ПРИМЕР ДЛЯ WORLD OBJECTS (ЖИВОТНЫЕ И ТЕХНИКА)
-//     Животные и техника (код Юсуфа) должны подписываться на событие OnUpgradeApplied
-//     и применять эффекты для своих параметров
-// 
+//
+//     Для отписки используйте Unsubscribe:
+//       private void OnDestroy()
+//       {
+//           UpgradeSystem.Instance.Unsubscribe(UpgradeType.PLAYER_INVENTORY, OnInventoryUpgraded);
+//       }
+//
+// 9. ПРИМЕР ДЛЯ WORLD OBJECTS (ЖИВОТНЫЕ И ТЕХНИКА)
+//     Животные и техника должны подписываться на свои типы улучшений
 //     Базовый класс для всех производителей:
 //       public abstract class BaseProducer : MonoBehaviour
 //       {
 //           protected UpgradeType _speedType;
 //           protected UpgradeType _capacityType;
 //           protected UpgradeType _staminaOrDurabilityType;
-// 
+//
 //           protected virtual void Start()
 //           {
-//               if (UpgradeSystem.Instance != null)
-//               {
-//                   UpgradeSystem.Instance.OnUpgradeApplied += OnUpgradeApplied;
-//               }
+//               UpgradeSystem.Instance.Subscribe(_speedType, OnUpgradeChanged);
+//               UpgradeSystem.Instance.Subscribe(_capacityType, OnUpgradeChanged);
+//               UpgradeSystem.Instance.Subscribe(_staminaOrDurabilityType, OnUpgradeChanged);
+//               ApplyUpgrades(); // применяем текущие уровни
+//           }
+//
+//           private void OnUpgradeChanged(int newLevel)
+//           {
 //               ApplyUpgrades();
 //           }
-// 
-//           private void OnUpgradeApplied(UpgradeType type, int newLevel)
-//           {
-//               if (type == _speedType || type == _capacityType || type == _staminaOrDurabilityType)
-//               {
-//                   ApplyUpgrades();
-//               }
-//           }
-// 
+//
 //           protected virtual void ApplyUpgrades()
 //           {
 //               // Переопределяется в каждом классе
 //           }
+//
+//           protected virtual void OnDestroy()
+//           {
+//               UpgradeSystem.Instance.Unsubscribe(_speedType, OnUpgradeChanged);
+//               UpgradeSystem.Instance.Unsubscribe(_capacityType, OnUpgradeChanged);
+//               UpgradeSystem.Instance.Unsubscribe(_staminaOrDurabilityType, OnUpgradeChanged);
+//           }
 //       }
-// 
+//
 //     Пример для курицы:
 //       public class Chicken : BaseProducer
 //       {
@@ -173,64 +157,38 @@ using UnityEngine;
 //               _capacityType = UpgradeType.ANIMAL_FEED;
 //               _staminaOrDurabilityType = UpgradeType.ANIMAL_STAMINA;
 //           }
-// 
+//
 //           protected override void ApplyUpgrades()
 //           {
 //               int speedLevel = UpgradeSystem.Instance.GetCurrentLevel(_speedType);
 //               int feedLevel = UpgradeSystem.Instance.GetCurrentLevel(_capacityType);
 //               int staminaLevel = UpgradeSystem.Instance.GetCurrentLevel(_staminaOrDurabilityType);
 //               
-//               _productionTime = 5f / (1f + speedLevel * 0.2f); // быстрее с каждым уровнем
-//               _maxFeed = 3 + feedLevel * 2; // больше еды
-//               _sleepTime = 60f + staminaLevel * 10f; // дольше не спит
+//               _productionTime = 5f / (1f + speedLevel * 0.2f);
+//               _maxFeed = 3 + feedLevel * 2;
+//               _sleepTime = 60f + staminaLevel * 10f;
 //           }
 //       }
-// 
+//
+// 10. ПРИМЕНЕНИЕ ВСЕХ ЭФФЕКТОВ ПРИ СТАРТЕ (ApplyAllUpgrades)
+//     После загрузки сохранённых уровней, UpgradeSystem автоматически вызывает ApplyAllUpgrades(),
+//     которая проходится по всем типам и вызывает соответствующие события
+//     Это гарантирует, что все системы получат начальные значения
+//
 // 11. ОТПИСКА ОТ СОБЫТИЙ (ВАЖНО!)
-//     При уничтожении объекта (OnDestroy) обязательно отпишитесь от события,
+//     При уничтожении объекта обязательно отписывайтесь от событий с помощью Unsubscribe,
 //     чтобы избежать утечек памяти и ошибок
-// 
-//     Пример:
-//       private void OnDestroy()
-//       {
-//           if (UpgradeSystem.Instance != null)
-//           {
-//               UpgradeSystem.Instance.OnUpgradeApplied -= OnUpgradeApplied;
-//           }
-//       }
-// 
+//
 // 12. ПРОВЕРКА ПОДКЛЮЧЕНИЯ IWalletAccess
-//     Если улучшения не работают (кнопка неактивна или TryUpgrade возвращает false),
-//     проверьте, что UpgradeSystem получил ссылку на кошелёк игрока
-// 
-//     В PlayerWallet (или в Bootstrap) должен быть вызов:
-//       UpgradeSystem.Instance.Initialize(this);
-// 
-//     Можно добавить проверку в UpgradeSystem:
-//       public bool IsWalletInitialized => _wallet != null;
-// 
-//     И использовать её в UI для диагностики:
-//       if (!UpgradeSystem.Instance.IsWalletInitialized)
-//       {
-//           Debug.LogError("UpgradeSystem: Wallet not initialized!");
-//       }
-// 
+//     Если улучшения не работают, проверьте, что UpgradeSystem получил ссылку на кошелёк
+//     В PlayerWallet должен быть вызов: UpgradeSystem.Instance.Initialize(this);
+//     Можно добавить проверку: public bool IsWalletInitialized => _wallet != null;
+//
 // 13. ОБНОВЛЕНИЕ UI ПОСЛЕ УЛУЧШЕНИЯ
-//     После успешного улучшения (TryUpgrade вернул true) обновите UI,
-//     чтобы отобразить новый уровень и стоимость следующего
-// 
+//     После успешного улучшения (TryUpgrade вернул true) обновите UI
 //     В UpgradeItemUI это делается автоматически через UpdateUI()
-//     Если у вас есть другие UI-элементы (например, отображение размера инвентаря),
-//     обновите их в обработчике события OnUpgradeApplied
-// 
-//     Пример обновления размера инвентаря в UI:
-//       private void OnUpgradeApplied(UpgradeType type, int newLevel)
-//       {
-//           if (type == UpgradeType.PLAYER_INVENTORY)
-//           {
-//               _inventorySizeText.text = $"Инвентарь: {1 + newLevel}";
-//           }
-//       }
+//     Если у вас есть другие UI-элементы, подпишитесь на соответствующее событие
+
 
 public class UpgradeSystem : MonoBehaviour
 {
@@ -241,7 +199,7 @@ public class UpgradeSystem : MonoBehaviour
     private Dictionary<UpgradeType, int> _currentLevels = new Dictionary<UpgradeType, int>();
     private Dictionary<UpgradeType, List<int>> _costs = new Dictionary<UpgradeType, List<int>>();
 
-    public event System.Action<UpgradeType, int> OnUpgradeApplied;
+    private Dictionary<UpgradeType, Action<int>> _upgradeEvents = new Dictionary<UpgradeType, Action<int>>();
 
     private void Awake()
     {
@@ -254,12 +212,36 @@ public class UpgradeSystem : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         InitializeCosts();
+        foreach (UpgradeType type in Enum.GetValues(typeof(UpgradeType)))
+        {
+            _upgradeEvents[type] = null;
+        }
     }
 
     private void Start()
     {
-
         LoadLevels();
+        ApplyAllUpgrades();
+    }
+
+    public void Subscribe(UpgradeType type, Action<int> callback)
+    {
+        if (_upgradeEvents.ContainsKey(type))
+        {
+            _upgradeEvents[type] += callback;
+        }
+        else
+        {
+            Debug.LogError($"UpgradeSystem: Unknown upgrade type {type}");
+        }
+    }
+
+    public void Unsubscribe(UpgradeType type, Action<int> callback)
+    {
+        if (_upgradeEvents.ContainsKey(type))
+        {
+            _upgradeEvents[type] -= callback;
+        }
     }
 
     public void Initialize(IWalletAccess wallet)
@@ -276,7 +258,6 @@ public class UpgradeSystem : MonoBehaviour
         _costs[UpgradeType.MACHINE_CAPACITY] = new List<int> { 100, 250, 450 };
         _costs[UpgradeType.MACHINE_SPEED] = new List<int> { 150, 350, 600 };
         _costs[UpgradeType.MACHINE_DURABILITY] = new List<int> { 200, 450, 750 };
-
     }
 
     public bool CanUpgrade(UpgradeType type)
@@ -284,7 +265,6 @@ public class UpgradeSystem : MonoBehaviour
         if (_wallet == null) return false;
         if (IsMaxLevel(type)) return false;
         int cost = GetNextLevelCost(type);
-        if (_wallet.GetMoney() >= cost) return true;
         return _wallet.GetMoney() >= cost;
     }
 
@@ -296,12 +276,16 @@ public class UpgradeSystem : MonoBehaviour
         if (!_wallet.SpendMoney(cost)) return false;
 
         _currentLevels[type] = _currentLevels.ContainsKey(type) ? _currentLevels[type] + 1 : 1;
+        int newLevel = _currentLevels[type];
 
         SaveLevels();
 
-        OnUpgradeApplied?.Invoke(type, _currentLevels[type]);
+        if (_upgradeEvents.ContainsKey(type))
+        {
+            _upgradeEvents[type]?.Invoke(newLevel);
+        }
 
-        Debug.Log($"Upgraded {type} to level {_currentLevels[type]}");
+        Debug.Log($"Upgraded {type} to level {newLevel}");
         return true;
     }
 
@@ -324,6 +308,17 @@ public class UpgradeSystem : MonoBehaviour
         return GetCurrentLevel(type) >= _costs[type].Count;
     }
 
+    public void ApplyAllUpgrades()
+    {
+        foreach (var type in _currentLevels.Keys)
+        {
+            int level = _currentLevels[type];
+            if (_upgradeEvents.ContainsKey(type))
+            {
+                _upgradeEvents[type]?.Invoke(level);
+            }
+        }
+    }
     private void SaveLevels()
     {
         SaveSystem.Instance.SaveObject("upgrades", _currentLevels);
@@ -344,6 +339,12 @@ public class UpgradeSystem : MonoBehaviour
         else
         {
             _currentLevels = new Dictionary<UpgradeType, int>();
+        }
+
+        foreach (UpgradeType type in Enum.GetValues(typeof(UpgradeType)))
+        {
+            if (!_currentLevels.ContainsKey(type))
+                _currentLevels[type] = 0;
         }
     }
 

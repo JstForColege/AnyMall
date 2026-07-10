@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Инвентарь и руки")]
     [SerializeField] private PlayerInventory inventory;
+    [SerializeField] private int baseInventorySize = 3;
     [SerializeField] private Transform handPosition;
 
     private Vector2 moveInput;
@@ -31,10 +32,19 @@ public class PlayerController : MonoBehaviour
         if (spriteRenderer == null)
             spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
-        inventory = new PlayerInventory(inventory.MaxSize);
+        inventory = new PlayerInventory(baseInventorySize);
 
-        if (handPosition == null)
-            Debug.LogError("HandPosition не назначен в инспекторе!");
+        if (UpgradeSystem.Instance != null)
+        {
+            UpgradeSystem.Instance.Subscribe(UpgradeType.PLAYER_INVENTORY, OnInventoryUpgraded);
+
+            int currentLevel = UpgradeSystem.Instance.GetCurrentLevel(UpgradeType.PLAYER_INVENTORY);
+            OnInventoryUpgraded(currentLevel);
+        }
+        else
+        {
+            Debug.LogWarning("UpgradeSystem не найден, размер инвентаря не будет улучшаться.");
+        }
 
         UpdateHand();
         Debug.Log($"MaxSize = {inventory.MaxSize}");
@@ -183,6 +193,13 @@ public class PlayerController : MonoBehaviour
     public void RefreshHand()
     {
         UpdateHand();
+    }
+    private void OnInventoryUpgraded(int newLevel)
+    {
+        int newSize = baseInventorySize + newLevel;
+        inventory.SetMaxSize(newSize);
+        Debug.Log($"Размер инвентаря увеличен до {newSize}");
+
     }
 
     private void UpdateHand()
