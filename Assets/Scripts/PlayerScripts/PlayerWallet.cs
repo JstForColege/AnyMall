@@ -26,6 +26,18 @@ public class PlayerWallet : MonoBehaviour, IWalletAccess
     {
         LoadWallet();
         UpdateUI();
+
+        if (UpgradeSystem.Instance != null)
+        {
+            UpgradeSystem.Instance.Initialize(this);
+            Debug.Log("PlayerWallet: UpgradeSystem initialized.");
+
+            UpgradeWindow window = FindFirstObjectByType<UpgradeWindow>();
+            if (window != null)
+            {
+                window.RefreshAllItems();
+            }
+        }
     }
 
     public int GetMoney()
