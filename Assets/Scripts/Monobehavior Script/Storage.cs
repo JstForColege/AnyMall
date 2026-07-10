@@ -31,22 +31,23 @@ public class Storage : MonoBehaviour
         {
             return false;
         }
-        StartCoroutine(AddCoroutine());
+        int index = _currentAmount;
+        ++_currentAmount;
+        StartCoroutine(AddCoroutine(index));
         return true;
     }
-    private IEnumerator AddCoroutine()
+    private IEnumerator AddCoroutine(int index)
     {
         yield return new WaitForSeconds(0.3f);
         Debug.Log("Фрукт на полку");
         Debug.Log($"{_currentAmount}");
         Debug.Log($"{_storageSlots.Length}");
         Debug.Log(_storagedFruits == null);
-        _storagedFruits[_currentAmount] = Instantiate(_fruitPrefab, _storageSlots[_currentAmount].position, Quaternion.identity);
-        ++_currentAmount;
+        _storagedFruits[index] = Instantiate(_fruitPrefab, _storageSlots[index].position, Quaternion.identity);
     }
     private void Start()
     {
-        _storagedFruits = new GameObject[_storageSlots.Length];
+        _storagedFruits = new GameObject[_capacity];
     }
     #endregion
     public ItemData RemoveItem()

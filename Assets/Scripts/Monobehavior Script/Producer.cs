@@ -45,19 +45,17 @@ public class Producer : MonoBehaviour
         {
             return false;
         }
-        StartCoroutine(AddCoroutine());
+        ++_currentIngridient;
+        StartCoroutine(AddCoroutine(_currentIngridient-1));
         return true;
     }
-    private IEnumerator AddCoroutine()
+    private IEnumerator AddCoroutine(int index)
     {
-        int index = _currentIngridient;
-        ++_currentIngridient;
-
         yield return new WaitForSeconds(0.3f);
+
         Debug.Log("ингридиент на полку");
         _addedIngridients[index] = 
             Instantiate(_inPrefab, _ingridientSlots[index].position, Quaternion.identity);
-        ++_currentIngridient;
         Produce();
     }
     #endregion
@@ -78,9 +76,9 @@ public class Producer : MonoBehaviour
             Destroy(_addedIngridients[_currentIngridient]);
             _addedIngridients[_currentIngridient] = null;
             yield return new WaitForSeconds(_makingTime);
-            ++_currentOutgridient;
             _producedOutgridients[_currentOutgridient] =
                 Instantiate(_outPrefab, _outgridientSlots[_currentOutgridient].position, Quaternion.identity);
+            ++_currentOutgridient;
         }
         _isWorking = false;
 
