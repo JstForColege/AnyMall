@@ -1,3 +1,4 @@
+using Assets.Scripts.Monobehavior_Script;
 using System.Collections;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private SpriteRenderer spriteRenderer;
 
     [Header("Движение")]
-    [SerializeField] private float moveSpeed = 6f;
+    [SerializeField] private float moveSpeed = 3f;
 
     [Header("Инвентарь и руки")]
     [SerializeField] private PlayerInventory inventory;
@@ -42,13 +43,13 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         HandleInput();
-        UpdateSpriteFlip();
-        UpdateAnimation();
+        SpriteFlip();
+        Animation();
     }
 
     private void FixedUpdate()
     {
-        ApplyMovement();
+        Move();
     }
 
     #region Движение
@@ -59,7 +60,7 @@ public class PlayerController : MonoBehaviour
         isMoving = moveInput.magnitude > 0.1f;
     }
 
-    private void UpdateSpriteFlip()
+    private void SpriteFlip()
     {
         if (spriteRenderer == null) return;
         if (moveInput.x > 0)
@@ -68,7 +69,7 @@ public class PlayerController : MonoBehaviour
             spriteRenderer.flipX = true;
     }
 
-    private void ApplyMovement()
+    private void Move()
     {
         if (body != null)
             body.linearVelocity = moveInput * moveSpeed;
@@ -78,7 +79,7 @@ public class PlayerController : MonoBehaviour
 
     #region Анимация
 
-    private void UpdateAnimation()
+    private void Animation()
     {
         if (animator != null)
             animator.SetBool("isMoving", isMoving);
@@ -104,12 +105,39 @@ public class PlayerController : MonoBehaviour
         if (other.TryGetComponent(out Storage shelf))
         {
             if (inventory.IsEmpty) return;
+            Debug.Log("Вижу полку");
             ItemData item = inventory.Peek();
             if (shelf.AddItem(item))
             {
                 inventory.Pop();
                 UpdateHand();
+                Debug.Log("выложил");
             }
+            return;
+        }
+        if (other.TryGetComponent(out ProducerInput input))
+        {
+            if (inventory.IsEmpty) return;
+            ItemData item = inventory.Peek();
+            Debug.Log("Вижу что-то аааааааааааааааааа");
+            if (input.producer.AddItem(item))
+            {
+                Debug.Log("Положил что-то аааааааааааааааааа");
+                inventory.Pop();
+                UpdateHand();
+            }
+            return;
+        }
+        if (other.TryGetComponent(out ProducerOutput output))
+        {
+            if (inventory.IsFull) return;
+            ItemData item = output.producer.TakeOutgridient();
+            if (item != null)
+            {
+                inventory.Push(item);
+                UpdateHand();
+            }
+            return;
         }
 
         HooliganAI hooligan = other.GetComponent<HooliganAI>();
@@ -126,12 +154,26 @@ public class PlayerController : MonoBehaviour
             }
             return;
         }
+
         // надо: взаимодействие с другими объектами через IInteractable
     }
 
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.TryGetComponent(out CashRegister cashRegister))
+        {
+            bool served = cashRegister.TryServeNextCustomer();
+            if (served)
+            {
+                Debug.Log("Player: Served customer at cash!");
+            }
+            return;
+        }
+
+    }
     #endregion
 
-    #region Инвентарь и руки
+        #region Инвентарь и руки
 
     public PlayerInventory GetInventory()
     {

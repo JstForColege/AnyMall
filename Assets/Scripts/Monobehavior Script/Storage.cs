@@ -14,7 +14,7 @@ public class Storage : MonoBehaviour
     #region добавить
     public bool CanAdd(ItemData item) //сделать enum
     {
-        if (item != _item)
+        if (item.Type != _item.Type)
         {
             return false;
         }
@@ -31,15 +31,23 @@ public class Storage : MonoBehaviour
         {
             return false;
         }
-        StartCoroutine(AddCoroutine());
+        int index = _currentAmount;
+        ++_currentAmount;
+        StartCoroutine(AddCoroutine(index));
         return true;
     }
-    private IEnumerator AddCoroutine()
+    private IEnumerator AddCoroutine(int index)
     {
         yield return new WaitForSeconds(0.3f);
         Debug.Log("Фрукт на полку");
-        _storagedFruits[_currentAmount - 1] = Instantiate(_fruitPrefab, _storageSlots[_currentAmount].position, Quaternion.identity);
-        ++_currentAmount;
+        Debug.Log($"{_currentAmount}");
+        Debug.Log($"{_storageSlots.Length}");
+        Debug.Log(_storagedFruits == null);
+        _storagedFruits[index] = Instantiate(_fruitPrefab, _storageSlots[index].position, Quaternion.identity);
+    }
+    private void Start()
+    {
+        _storagedFruits = new GameObject[_capacity];
     }
     #endregion
     public ItemData RemoveItem()

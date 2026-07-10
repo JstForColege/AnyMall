@@ -4,7 +4,7 @@ using UnityEngine;
 [System.Serializable]
 public class PlayerInventory
 {
-    [SerializeField] private int maxSize = 1;
+    [SerializeField] private int maxSize = 3;
     private Stack<ItemData> stack = new Stack<ItemData>();
 
     public PlayerInventory(int initialMaxSize = 1)
@@ -30,7 +30,7 @@ public class PlayerInventory
             return false;
         }
         stack.Push(item);
-        Debug.Log($"Предмет {item.Name} добавлен в инвентарь. Всего: {stack.Count}");
+        Debug.Log($"Предмет {item.Type.ToString()} добавлен в инвентарь. Всего: {stack.Count}");
         return true;
     }
 
@@ -57,14 +57,17 @@ public class PlayerInventory
 [System.Serializable]
 public class ItemData //сделать enum
 {
-    public string Id;
-    public string Name;
+    public ItemType Type;
     public Sprite Icon;
-
-    public ItemData(string id, string name, Sprite icon = null)
+    public ItemData(ItemType type, Sprite icon = null)
     {
-        Id = id;
-        Name = name;
-        //Icon = icon;
+        Type = type;
+        Icon = icon;
     }
+}
+public enum ItemType
+{
+    Banana, Corn,
+    Egg, Milk,
+    Popcorn, Yogurt
 }
