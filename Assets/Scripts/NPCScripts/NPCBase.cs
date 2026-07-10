@@ -68,9 +68,17 @@ public abstract class NPCBase : MonoBehaviour
             float dirX = agent.velocity.x;
             if (Mathf.Abs(dirX) > 0.1f)
             {
-                spriteRenderer.flipX = dirX < 0;
+                bool newFlip = dirX < 0;
+                if (spriteRenderer != null)
+                    spriteRenderer.flipX = newFlip;
+                UpdateHandFlip();
             }
         }
+    }
+
+    protected virtual void UpdateHandFlip()
+    {
+        // Переопределяется в CustomerAI
     }
 
     protected virtual void Update()

@@ -91,6 +91,12 @@ public class PlayerInventoryHandler : MonoBehaviour
         ItemData topItem = inventory.Peek();
         if (topItem == null || topItem.Icon == null) return;
 
+        if (handPosition == null)
+        {
+            Debug.LogError("handPosition is null!");
+            return;
+        }
+
         handItemObject = new GameObject("HandItem");
         handItemObject.transform.SetParent(handPosition);
         handItemObject.transform.localPosition = Vector3.zero;
@@ -99,13 +105,28 @@ public class PlayerInventoryHandler : MonoBehaviour
         SpriteRenderer sr = handItemObject.AddComponent<SpriteRenderer>();
         sr.sprite = topItem.Icon;
 
+        // Настраиваем сортировку: тот же слой, что у игрока, но порядок +1
         if (playerSpriteRenderer != null)
+        {
+            sr.sortingLayerName = playerSpriteRenderer.sortingLayerName;
             sr.sortingOrder = playerSpriteRenderer.sortingOrder + 1;
+            sr.flipX = playerSpriteRenderer.flipX; // начальный поворот
+        }
         else
+        {
             sr.sortingOrder = 1;
+        }
+    }
 
-        if (playerSpriteRenderer != null)
+    // Новый метод для обновления поворота предмета
+    public void UpdateHandFlip()
+    {
+        if (handItemObject == null) return;
+        SpriteRenderer sr = handItemObject.GetComponent<SpriteRenderer>();
+        if (sr != null && playerSpriteRenderer != null)
+        {
             sr.flipX = playerSpriteRenderer.flipX;
+        }
     }
 
     private void OnDestroy()

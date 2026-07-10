@@ -204,12 +204,16 @@ public class CustomerAI : NPCBase
         sr.sprite = item.Icon;
 
         if (spriteRenderer != null)
+        {
+            sr.sortingLayerName = spriteRenderer.sortingLayerName;
             sr.sortingOrder = spriteRenderer.sortingOrder + 1;
-        else
-            sr.sortingOrder = 1;
-
-        if (spriteRenderer != null)
             sr.flipX = spriteRenderer.flipX;
+        }
+        else
+        {
+            sr.sortingOrder = 1;
+        }
+
     }
 
     private void ClearHand()
@@ -218,6 +222,16 @@ public class CustomerAI : NPCBase
         {
             Destroy(handItemObject);
             handItemObject = null;
+        }
+    }
+
+    protected override void UpdateHandFlip()
+    {
+        if (handItemObject == null) return;
+        SpriteRenderer sr = handItemObject.GetComponent<SpriteRenderer>();
+        if (sr != null && spriteRenderer != null)
+        {
+            sr.flipX = spriteRenderer.flipX;
         }
     }
 
