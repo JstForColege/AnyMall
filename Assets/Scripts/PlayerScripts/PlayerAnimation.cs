@@ -2,15 +2,34 @@ using UnityEngine;
 
 public class PlayerAnimation : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private Animator animator;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private PlayerController playerController;
+
+    private void Start()
     {
-        
+        if (animator == null)
+            animator = GetComponent<Animator>();
+        if (spriteRenderer == null)
+            spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        if (playerController == null)
+            playerController = GetComponent<PlayerController>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        Vector2 moveInput = playerController.GetMoveInput();
+        bool isMoving = moveInput.magnitude > 0.1f;
+
+        if (animator != null)
+            animator.SetBool("isMoving", isMoving);
+
+        if (spriteRenderer != null)
+        {
+            if (moveInput.x > 0)
+                spriteRenderer.flipX = false;
+            else if (moveInput.x < 0)
+                spriteRenderer.flipX = true;
+        }
     }
 }

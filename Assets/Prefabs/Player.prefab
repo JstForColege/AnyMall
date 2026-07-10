@@ -214,6 +214,9 @@ GameObject:
   - component: {fileID: 8392956505085235821}
   - component: {fileID: 5394032395737255802}
   - component: {fileID: 3221765700883830420}
+  - component: {fileID: 1337893113778280033}
+  - component: {fileID: 1798556233254621923}
+  - component: {fileID: 2102470573169116750}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -278,13 +281,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbe69243b08575747ae736d82ede41cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerManipulator
-  body: {fileID: 8688164849963698379}
-  animator: {fileID: 3236534610761604860}
-  spriteRenderer: {fileID: 5905621496577522845}
   moveSpeed: 2
-  inventory:
-    maxSize: 3
-  handPosition: {fileID: 5240104149082739896}
+  body: {fileID: 8688164849963698379}
 --- !u!61 &5394032395737255802
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -345,6 +343,49 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerWallet
   moneyText: {fileID: 0}
   money: 20
+--- !u!114 &1337893113778280033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4146927383141632371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5de9aa75154aeb47943eb14c4bf6e36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimation
+  animator: {fileID: 3236534610761604860}
+  spriteRenderer: {fileID: 5905621496577522845}
+  playerController: {fileID: 8392956505085235821}
+--- !u!114 &1798556233254621923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4146927383141632371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac7a468cdafdfa04d9d3d9a8e3b53b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInteraction
+  inventoryHandler: {fileID: 2102470573169116750}
+--- !u!114 &2102470573169116750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4146927383141632371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3b230bdc73f5cd48823192d907e7da8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInventoryHandler
+  baseInventorySize: 3
+  handPosition: {fileID: 5240104149082739896}
+  playerSpriteRenderer: {fileID: 5905621496577522845}
 --- !u!1 &5371128494203581454
 GameObject:
   m_ObjectHideFlags: 0
