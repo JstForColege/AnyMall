@@ -202,7 +202,11 @@ public class CustomerAI : NPCBase
 
         SpriteRenderer sr = handItemObject.AddComponent<SpriteRenderer>();
         sr.sprite = item.Icon;
-        sr.sortingOrder = 1;
+
+        if (spriteRenderer != null)
+            sr.sortingOrder = spriteRenderer.sortingOrder + 1;
+        else
+            sr.sortingOrder = 1;
 
         if (spriteRenderer != null)
             sr.flipX = spriteRenderer.flipX;

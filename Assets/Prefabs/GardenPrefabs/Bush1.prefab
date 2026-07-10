@@ -194,7 +194,7 @@ MonoBehaviour:
   _fruitPrefab: {fileID: 1075650083777188959, guid: 271c096a56a6bc547a0196cc532c1a77, type: 3}
   _itemData:
     Type: 0
-    Icon: {fileID: 0}
+    Icon: {fileID: 21300000, guid: b81bfb7fe416d4e4496bb2f3f1731596, type: 3}
 --- !u!1 &3236696643503348208
 GameObject:
   m_ObjectHideFlags: 0

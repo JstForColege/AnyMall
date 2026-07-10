@@ -98,7 +98,11 @@ public class PlayerInventoryHandler : MonoBehaviour
 
         SpriteRenderer sr = handItemObject.AddComponent<SpriteRenderer>();
         sr.sprite = topItem.Icon;
-        sr.sortingOrder = 1;
+
+        if (playerSpriteRenderer != null)
+            sr.sortingOrder = playerSpriteRenderer.sortingOrder + 1;
+        else
+            sr.sortingOrder = 1;
 
         if (playerSpriteRenderer != null)
             sr.flipX = playerSpriteRenderer.flipX;
