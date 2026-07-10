@@ -9943,7 +9943,11 @@ PrefabInstance:
       objectReference: {fileID: 2552453473018231545, guid: 257648f6ba0f76b48b41b7199fb57059, type: 3}
     - target: {fileID: 1001984654158683256, guid: 95ebf2ed5e5439342b0234df3fdfcca6, type: 3}
       propertyPath: _makingTime
-      value: 2
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1001984654158683256, guid: 95ebf2ed5e5439342b0234df3fdfcca6, type: 3}
+      propertyPath: _producerType
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1001984654158683256, guid: 95ebf2ed5e5439342b0234df3fdfcca6, type: 3}
       propertyPath: _maxIngridient
@@ -10205,7 +10209,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3221765700883830420, guid: 502f1e0cff87c994a822854765fd3db3, type: 3}
       propertyPath: money
-      value: 500
+      value: 500000
       objectReference: {fileID: 0}
     - target: {fileID: 3221765700883830420, guid: 502f1e0cff87c994a822854765fd3db3, type: 3}
       propertyPath: moneyText
@@ -10359,7 +10363,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3078704409237670708, guid: aafe000ec9803314bb5401fda76679c1, type: 3}
       propertyPath: _makingTime
-      value: 2
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3078704409237670708, guid: aafe000ec9803314bb5401fda76679c1, type: 3}
+      propertyPath: _producerType
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5835788635788548700, guid: aafe000ec9803314bb5401fda76679c1, type: 3}
       propertyPath: m_Name
