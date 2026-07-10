@@ -55,9 +55,3 @@ public class ResourceNode : MonoBehaviour
         return _itemData;
     }
 }
-
-
-public class ResourceFood //Заглушка покаа Юсуф не сделает класс
-{
-    public int id;
-}

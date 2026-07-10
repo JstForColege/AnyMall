@@ -1,3 +1,4 @@
+using Assets.Scripts.Monobehavior_Script;
 using System.Collections;
 using UnityEngine;
 
@@ -112,6 +113,31 @@ public class PlayerController : MonoBehaviour
                 UpdateHand();
                 Debug.Log("выложил");
             }
+            return;
+        }
+        if (other.TryGetComponent(out ProducerInput input))
+        {
+            if (inventory.IsEmpty) return;
+            ItemData item = inventory.Peek();
+            Debug.Log("Вижу что-то аааааааааааааааааа");
+            if (input.producer.AddItem(item))
+            {
+                Debug.Log("Положил что-то аааааааааааааааааа");
+                inventory.Pop();
+                UpdateHand();
+            }
+            return;
+        }
+        if (other.TryGetComponent(out ProducerOutput output))
+        {
+            if (inventory.IsFull) return;
+            ItemData item = output.producer.TakeOutgridient();
+            if (item != null)
+            {
+                inventory.Push(item);
+                UpdateHand();
+            }
+            return;
         }
 
         HooliganAI hooligan = other.GetComponent<HooliganAI>();

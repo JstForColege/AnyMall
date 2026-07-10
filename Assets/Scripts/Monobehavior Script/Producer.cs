@@ -50,10 +50,13 @@ public class Producer : MonoBehaviour
     }
     private IEnumerator AddCoroutine()
     {
+        int index = _currentIngridient;
+        ++_currentIngridient;
+
         yield return new WaitForSeconds(0.3f);
         Debug.Log("ингридиент на полку");
-        _addedIngridients[_currentIngridient] = 
-            Instantiate(_inPrefab, _ingridientSlots[_currentIngridient].position, Quaternion.identity);
+        _addedIngridients[index] = 
+            Instantiate(_inPrefab, _ingridientSlots[index].position, Quaternion.identity);
         ++_currentIngridient;
         Produce();
     }
@@ -77,7 +80,7 @@ public class Producer : MonoBehaviour
             yield return new WaitForSeconds(_makingTime);
             ++_currentOutgridient;
             _producedOutgridients[_currentOutgridient] =
-                Instantiate(_outPrefab, _outgridientSlots[_currentOutgridient - 1].position, Quaternion.identity);
+                Instantiate(_outPrefab, _outgridientSlots[_currentOutgridient].position, Quaternion.identity);
         }
         _isWorking = false;
 
@@ -96,7 +99,7 @@ public class Producer : MonoBehaviour
         Produce();
         return _outgridient;
     }
-    public void start()
+    private void Start()
     {
         _addedIngridients = new GameObject[_maxIngridient];
         _producedOutgridients = new GameObject[_maxOutgridient];
