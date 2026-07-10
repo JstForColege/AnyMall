@@ -187,12 +187,6 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateHand()
     {
-        if (inventory == null)
-        {
-            Debug.LogError("Inventory is null in UpdateHand!");
-            return;
-        }
-
         if (handItemObject != null)
         {
             Destroy(handItemObject);
@@ -207,12 +201,6 @@ public class PlayerController : MonoBehaviour
 
         ItemData topItem = inventory.Peek();
         if (topItem == null) return;
-
-        if (handPosition == null)
-        {
-            Debug.LogError("HandPosition is null in UpdateHand!");
-            return;
-        }
 
         handItemObject = new GameObject("HandItem");
         handItemObject.transform.SetParent(handPosition);

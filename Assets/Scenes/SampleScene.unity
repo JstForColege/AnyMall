@@ -3260,7 +3260,7 @@ PrefabInstance:
       objectReference: {fileID: 7134212931437471658, guid: 295b1ffa13983e04caee9cf0fb95b264, type: 3}
     - target: {fileID: 3653942279561050469, guid: 9e9a231ac9628ca43ba84e8d7e10e0af, type: 3}
       propertyPath: _storageSlots.Array.size
-      value: 15
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 3653942279561050469, guid: 9e9a231ac9628ca43ba84e8d7e10e0af, type: 3}
       propertyPath: '_storageSlots.Array.data[0]'
@@ -3325,7 +3325,7 @@ PrefabInstance:
     - target: {fileID: 3653942279561050469, guid: 9e9a231ac9628ca43ba84e8d7e10e0af, type: 3}
       propertyPath: '_storageSlots.Array.data[15]'
       value: 
-      objectReference: {fileID: 1391501187}
+      objectReference: {fileID: 2468329736885002460, guid: 295b1ffa13983e04caee9cf0fb95b264, type: 3}
     - target: {fileID: 3653942279561050469, guid: 9e9a231ac9628ca43ba84e8d7e10e0af, type: 3}
       propertyPath: '_storageSlots.Array.data[16]'
       value: 
@@ -10353,6 +10353,14 @@ PrefabInstance:
     - target: {fileID: 4146927383141632371, guid: 502f1e0cff87c994a822854765fd3db3, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 5240104149082739896, guid: 502f1e0cff87c994a822854765fd3db3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.162
+      objectReference: {fileID: 0}
+    - target: {fileID: 5240104149082739896, guid: 502f1e0cff87c994a822854765fd3db3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.081
       objectReference: {fileID: 0}
     - target: {fileID: 5394032395737255802, guid: 502f1e0cff87c994a822854765fd3db3, type: 3}
       propertyPath: m_Size.y

@@ -32,7 +32,6 @@ public class CustomerAI : NPCBase
         yield return new WaitForSeconds(0.1f);
         if (agent == null)
         {
-            Debug.LogError("Agent still null after delay!");
             yield break;
         }
         ApplyWaypoints(points);
@@ -53,7 +52,6 @@ public class CustomerAI : NPCBase
             currentWaypointIndex = 0;
             currentState = State.MovingToShelf;
             MoveToNextWaypoint();
-            Debug.Log($"Customer: Starting with {waypoints.Count} waypoints");
         }
         else
         {
@@ -65,7 +63,6 @@ public class CustomerAI : NPCBase
     {
         cashPoint = point;
 
-        // Находим компонент CashRegister на точке кассы
         if (cashPoint != null)
         {
             cashRegister = cashPoint.GetComponent<CashRegister>();
@@ -98,7 +95,6 @@ public class CustomerAI : NPCBase
         {
             MoveTo(cashPoint.position);
             currentState = State.MovingToCash;
-            Debug.Log("Customer: Going to cash");
         }
         else
         {
@@ -118,7 +114,6 @@ public class CustomerAI : NPCBase
                 {
                     currentState = State.WaitingAtShelf;
                     waitTimer = waitDuration;
-                    Debug.Log($"Customer: Arrived at shelf {currentWaypointIndex}");
                 }
                 break;
 
@@ -139,7 +134,6 @@ public class CustomerAI : NPCBase
                         cashRegister.RegisterCustomer(this);
                         isRegistered = true;
                         currentState = State.WaitingAtCash;
-                        Debug.Log("Customer: Registered at cash, waiting in queue");
                     }
                     else
                     {
@@ -149,26 +143,22 @@ public class CustomerAI : NPCBase
                 break;
 
             case State.WaitingAtCash:
-                // Ждём своей очереди
                 break;
         }
     }
 
     public void OnPaymentDone()
     {
-        // Перед уходом говорим спавнеру, что мы уходим
         if (spawner != null)
         {
             spawner.OnCustomerLeft(this);
         }
 
         LeaveStore();
-        Debug.Log("Customer: Payment done, leaving");
     }
 
     private void OnDestroy()
     {
-        // Уведомляем спавнер (если ещё не уведомили через OnPaymentDone)
         if (spawner != null)
         {
             spawner.OnCustomerLeft(this);
