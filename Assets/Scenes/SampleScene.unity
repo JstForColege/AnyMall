@@ -279,6 +279,10 @@ PrefabInstance:
       value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 7988616815741831891, guid: 228109c5a137b7341bcbe9e23ec44550, type: 3}
+      propertyPath: _item.Icon
+      value: 
+      objectReference: {fileID: 21300000, guid: a9a44a563fd7b9f4786f81627cc0664e, type: 3}
+    - target: {fileID: 7988616815741831891, guid: 228109c5a137b7341bcbe9e23ec44550, type: 3}
       propertyPath: _item.Type
       value: 5
       objectReference: {fileID: 0}
@@ -3251,6 +3255,10 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 3653942279561050469, guid: 9e9a231ac9628ca43ba84e8d7e10e0af, type: 3}
+      propertyPath: _item.Icon
+      value: 
+      objectReference: {fileID: 21300000, guid: 91ec6b2fb8e2ef24da3c2be087d4e1fa, type: 3}
+    - target: {fileID: 3653942279561050469, guid: 9e9a231ac9628ca43ba84e8d7e10e0af, type: 3}
       propertyPath: _item.Type
       value: 1
       objectReference: {fileID: 0}
@@ -5182,6 +5190,10 @@ PrefabInstance:
       value: ShelfPopcorn
       objectReference: {fileID: 0}
     - target: {fileID: 3653942279561050469, guid: 9e9a231ac9628ca43ba84e8d7e10e0af, type: 3}
+      propertyPath: _item.Icon
+      value: 
+      objectReference: {fileID: 21300000, guid: c2510382b8ed93d498e5bfff8ba3da3d, type: 3}
+    - target: {fileID: 3653942279561050469, guid: 9e9a231ac9628ca43ba84e8d7e10e0af, type: 3}
       propertyPath: _item.Type
       value: 4
       objectReference: {fileID: 0}
@@ -5770,6 +5782,10 @@ PrefabInstance:
       propertyPath: _capacity
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 3653942279561050469, guid: 9e9a231ac9628ca43ba84e8d7e10e0af, type: 3}
+      propertyPath: _item.Icon
+      value: 
+      objectReference: {fileID: 21300000, guid: 9c64c1c2a7744ca4e95a0b358ca01c05, type: 3}
     - target: {fileID: 3653942279561050469, guid: 9e9a231ac9628ca43ba84e8d7e10e0af, type: 3}
       propertyPath: _item.Type
       value: 2
@@ -9077,6 +9093,10 @@ PrefabInstance:
       value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 7988616815741831891, guid: 228109c5a137b7341bcbe9e23ec44550, type: 3}
+      propertyPath: _item.Icon
+      value: 
+      objectReference: {fileID: 21300000, guid: d5b78fe10a643a14b99efc72d8e96334, type: 3}
+    - target: {fileID: 7988616815741831891, guid: 228109c5a137b7341bcbe9e23ec44550, type: 3}
       propertyPath: _item.Type
       value: 3
       objectReference: {fileID: 0}
@@ -10058,6 +10078,10 @@ PrefabInstance:
       propertyPath: _item.Id
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3653942279561050469, guid: 9e9a231ac9628ca43ba84e8d7e10e0af, type: 3}
+      propertyPath: _item.Icon
+      value: 
+      objectReference: {fileID: 21300000, guid: b81bfb7fe416d4e4496bb2f3f1731596, type: 3}
     - target: {fileID: 3653942279561050469, guid: 9e9a231ac9628ca43ba84e8d7e10e0af, type: 3}
       propertyPath: _item.Name
       value: banana
