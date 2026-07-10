@@ -9944,6 +9944,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1001984654158683256, guid: 95ebf2ed5e5439342b0234df3fdfcca6, type: 3}
+      propertyPath: _outgridient.Type
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1001984654158683256, guid: 95ebf2ed5e5439342b0234df3fdfcca6, type: 3}
       propertyPath: _ingridientSlots.Array.size
       value: 4
       objectReference: {fileID: 0}
