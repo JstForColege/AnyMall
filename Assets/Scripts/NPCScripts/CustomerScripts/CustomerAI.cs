@@ -5,16 +5,27 @@ using UnityEngine;
 public class CustomerAI : NPCBase
 {
     private List<Transform> waypoints;
+    private List<ItemType> shoppingList;
+    private int currentItemIndex = 0;
+
     private Transform cashPoint;
-    private int currentWaypointIndex = 0;
     private enum State { MovingToShelf, WaitingAtShelf, MovingToCash, WaitingAtCash }
     private State currentState = State.MovingToShelf;
     private float waitTimer = 0f;
-    private float waitDuration = 1.5f;
+    private float waitDuration = 0.5f;
 
     private CustomerSpawner spawner;
     private CashRegister cashRegister;
     private bool isRegistered = false;
+
+    [SerializeField] private Transform handPosition;
+    private GameObject handItemObject;
+
+    public void SetShoppingList(List<ItemType> items)
+    {
+        shoppingList = items;
+        currentItemIndex = 0;
+    }
 
     public void SetWaypoints(List<Transform> points)
     {
@@ -23,17 +34,13 @@ public class CustomerAI : NPCBase
             StartCoroutine(DelayedSetWaypoints(points));
             return;
         }
-
         ApplyWaypoints(points);
     }
 
     private IEnumerator DelayedSetWaypoints(List<Transform> points)
     {
         yield return new WaitForSeconds(0.1f);
-        if (agent == null)
-        {
-            yield break;
-        }
+        if (agent == null) yield break;
         ApplyWaypoints(points);
     }
 
@@ -49,7 +56,7 @@ public class CustomerAI : NPCBase
 
         if (waypoints.Count > 0)
         {
-            currentWaypointIndex = 0;
+            currentItemIndex = 0;
             currentState = State.MovingToShelf;
             MoveToNextWaypoint();
         }
@@ -62,7 +69,6 @@ public class CustomerAI : NPCBase
     public void SetCashPoint(Transform point)
     {
         cashPoint = point;
-
         if (cashPoint != null)
         {
             cashRegister = cashPoint.GetComponent<CashRegister>();
@@ -78,9 +84,9 @@ public class CustomerAI : NPCBase
 
     private void MoveToNextWaypoint()
     {
-        if (currentWaypointIndex < waypoints.Count)
+        if (currentItemIndex < waypoints.Count)
         {
-            MoveTo(waypoints[currentWaypointIndex].position);
+            MoveTo(waypoints[currentItemIndex].position);
             currentState = State.MovingToShelf;
         }
         else
@@ -113,7 +119,7 @@ public class CustomerAI : NPCBase
                 if (HasReachedTarget())
                 {
                     currentState = State.WaitingAtShelf;
-                    waitTimer = waitDuration;
+                    TryTakeItem();
                 }
                 break;
 
@@ -121,8 +127,8 @@ public class CustomerAI : NPCBase
                 waitTimer -= Time.deltaTime;
                 if (waitTimer <= 0f)
                 {
-                    currentWaypointIndex++;
-                    MoveToNextWaypoint();
+                    waitTimer = waitDuration;
+                    TryTakeItem();
                 }
                 break;
 
@@ -147,21 +153,82 @@ public class CustomerAI : NPCBase
         }
     }
 
-    public void OnPaymentDone()
+    private void TryTakeItem()
     {
-        if (spawner != null)
+        if (currentItemIndex >= waypoints.Count)
         {
-            spawner.OnCustomerLeft(this);
+            GoToCash();
+            return;
         }
 
+        Transform shelfTransform = waypoints[currentItemIndex];
+        Storage shelf = shelfTransform.GetComponent<Storage>();
+        if (shelf == null)
+        {
+            Debug.LogWarning($"Shelf at {shelfTransform.name} has no Storage component!");
+            currentItemIndex++;
+            MoveToNextWaypoint();
+            return;
+        }
+
+        ItemData item = shelf.RemoveItem();
+        if (item != null)
+        {
+            Debug.Log($"Customer: took {item.Type} from shelf {currentItemIndex}");
+            UpdateHand(item);
+            currentItemIndex++;
+            MoveToNextWaypoint();
+        }
+        else
+        {
+        }
+    }
+
+    private void UpdateHand(ItemData item)
+    {
+        if (handItemObject != null)
+        {
+            Destroy(handItemObject);
+            handItemObject = null;
+        }
+
+        if (item == null || item.Icon == null || handPosition == null)
+            return;
+
+        handItemObject = new GameObject("HandItem");
+        handItemObject.transform.SetParent(handPosition);
+        handItemObject.transform.localPosition = Vector3.zero;
+        handItemObject.transform.localScale = Vector3.one;
+
+        SpriteRenderer sr = handItemObject.AddComponent<SpriteRenderer>();
+        sr.sprite = item.Icon;
+        sr.sortingOrder = 1;
+
+        if (spriteRenderer != null)
+            sr.flipX = spriteRenderer.flipX;
+    }
+
+    private void ClearHand()
+    {
+        if (handItemObject != null)
+        {
+            Destroy(handItemObject);
+            handItemObject = null;
+        }
+    }
+
+    public void OnPaymentDone()
+    {
+        ClearHand();
+        if (spawner != null)
+            spawner.OnCustomerLeft(this);
         LeaveStore();
     }
 
     private void OnDestroy()
     {
+        ClearHand();
         if (spawner != null)
-        {
             spawner.OnCustomerLeft(this);
-        }
     }
 }

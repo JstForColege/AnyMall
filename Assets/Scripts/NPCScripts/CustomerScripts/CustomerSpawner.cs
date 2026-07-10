@@ -7,7 +7,7 @@ public class CustomerSpawner : MonoBehaviour
     [SerializeField] private GameObject customerPrefab;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private float spawnInterval = 5f;
-    [SerializeField] private List<Transform> waypoints;
+    [SerializeField] private List<Transform> waypoints; // точки с полками
     [SerializeField] private Transform cashWaypoint;
     [SerializeField] private int maxCustomers = 8;
 
@@ -31,7 +31,7 @@ public class CustomerSpawner : MonoBehaviour
     {
         if (activeCustomers.Count >= maxCustomers)
         {
-            Debug.Log($"CustomerSpawner: Max customers ({maxCustomers}) reached, skipping spawn");
+            Debug.Log($"CustomerSpawner: Max customers ({maxCustomers}) reached");
             return;
         }
 
@@ -42,33 +42,48 @@ public class CustomerSpawner : MonoBehaviour
         CustomerAI customerAI = newCustomer.GetComponent<CustomerAI>();
         if (customerAI != null)
         {
+            // Выбираем случайное количество товаров (2-4)
             int count = Random.Range(2, Mathf.Min(waypoints.Count + 1, 4));
-            List<Transform> selected = new List<Transform>();
+
+            List<Transform> selectedPoints = new List<Transform>();
+            List<ItemType> shoppingList = new List<ItemType>();
             List<Transform> available = new List<Transform>(waypoints);
 
             for (int i = 0; i < count; i++)
             {
                 if (available.Count == 0) break;
                 int idx = Random.Range(0, available.Count);
-                selected.Add(available[idx]);
+                Transform point = available[idx];
+                selectedPoints.Add(point);
                 available.RemoveAt(idx);
+
+                // Получаем тип товара с полки
+                Storage shelf = point.GetComponent<Storage>();
+                if (shelf != null)
+                {
+                    // Через рефлексию или публичное поле получаем тип товара
+                    // Я добавил публичное свойство GetItemType() в Storage
+                    shoppingList.Add(shelf.GetItemType());
+                }
             }
 
-            if (selected.Count > 0 && Vector3.Distance(spawnPoint.position, selected[0].position) < 0.5f)
+            // Убеждаемся, что первая точка не совпадает со спавном
+            if (selectedPoints.Count > 0 && Vector3.Distance(spawnPoint.position, selectedPoints[0].position) < 0.5f)
             {
-                Transform first = selected[0];
-                selected.RemoveAt(0);
+                Transform first = selectedPoints[0];
+                selectedPoints.RemoveAt(0);
                 if (available.Count > 0)
                 {
-                    selected.Insert(0, available[Random.Range(0, available.Count)]);
+                    selectedPoints.Insert(0, available[Random.Range(0, available.Count)]);
                 }
                 else
                 {
-                    selected.Add(first);
+                    selectedPoints.Add(first);
                 }
             }
 
-            customerAI.SetWaypoints(selected);
+            customerAI.SetWaypoints(selectedPoints);
+            customerAI.SetShoppingList(shoppingList); // ← передаём список покупок
             customerAI.SetCashPoint(cashWaypoint);
 
             activeCustomers.Add(customerAI);
@@ -81,7 +96,6 @@ public class CustomerSpawner : MonoBehaviour
         if (activeCustomers.Contains(customer))
         {
             activeCustomers.Remove(customer);
-            Debug.Log($"CustomerSpawner: Customer left, {activeCustomers.Count}/{maxCustomers} active");
         }
     }
 }

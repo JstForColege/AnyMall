@@ -25,6 +25,10 @@ public class Storage : MonoBehaviour
 
         return true;
     }
+    public ItemType GetItemType()
+    {
+        return _item.Type;
+    }
     public bool AddItem(ItemData item)
     {
         if (!CanAdd(item))

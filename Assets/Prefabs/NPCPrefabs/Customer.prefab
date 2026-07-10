@@ -33,7 +33,8 @@ Transform:
   m_LocalPosition: {x: -2.695, y: 5.382, z: 0}
   m_LocalScale: {x: 2.7854, y: 2.7854, z: 0}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1097466094597952757}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8845505176117097639
@@ -131,6 +132,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CustomerAI
   animator: {fileID: 2574734825887161636}
   spriteRenderer: {fileID: 8845505176117097639}
+  handPosition: {fileID: 1097466094597952757}
 --- !u!195 &2072773860216224665
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -199,3 +201,34 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.07923752, y: 0.07205474}
   m_EdgeRadius: 0
+--- !u!1 &9015015064726834512
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1097466094597952757}
+  m_Layer: 9
+  m_Name: Hand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1097466094597952757
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9015015064726834512}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.0437, y: -0.0326, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4976472197003186444}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
