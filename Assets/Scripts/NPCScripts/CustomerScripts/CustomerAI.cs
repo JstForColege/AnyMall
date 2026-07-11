@@ -143,7 +143,7 @@ public class CustomerAI : NPCBase
                 {
                     if (!isRegistered && cashRegister != null)
                     {
-                        cashRegister.RegisterCustomer(this);
+                        cashRegister.RegisterCustomer(this, shoppingList);
                         isRegistered = true;
                         currentState = State.WaitingAtCash;
                     }
