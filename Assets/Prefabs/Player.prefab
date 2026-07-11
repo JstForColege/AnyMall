@@ -358,7 +358,7 @@ MonoBehaviour:
   animator: {fileID: 3236534610761604860}
   spriteRenderer: {fileID: 5905621496577522845}
   playerController: {fileID: 8392956505085235821}
-  inventoryHandler: {fileID: 0}
+  inventoryHandler: {fileID: 2102470573169116750}
 --- !u!114 &1798556233254621923
 MonoBehaviour:
   m_ObjectHideFlags: 0

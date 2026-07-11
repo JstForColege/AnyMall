@@ -7,7 +7,7 @@ public class CustomerSpawner : MonoBehaviour
     [SerializeField] private GameObject customerPrefab;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private float spawnInterval = 5f;
-    [SerializeField] private List<Transform> waypoints; // точки с полками
+    [SerializeField] private List<Transform> waypoints;
     [SerializeField] private Transform cashWaypoint;
     [SerializeField] private int maxCustomers = 8;
 
@@ -42,7 +42,6 @@ public class CustomerSpawner : MonoBehaviour
         CustomerAI customerAI = newCustomer.GetComponent<CustomerAI>();
         if (customerAI != null)
         {
-            // Выбираем случайное количество товаров (2-4)
             int count = Random.Range(2, Mathf.Min(waypoints.Count + 1, 4));
 
             List<Transform> selectedPoints = new List<Transform>();
@@ -57,17 +56,14 @@ public class CustomerSpawner : MonoBehaviour
                 selectedPoints.Add(point);
                 available.RemoveAt(idx);
 
-                // Получаем тип товара с полки
                 Storage shelf = point.GetComponent<Storage>();
                 if (shelf != null)
                 {
-                    // Через рефлексию или публичное поле получаем тип товара
-                    // Я добавил публичное свойство GetItemType() в Storage
+
                     shoppingList.Add(shelf.GetItemType());
                 }
             }
 
-            // Убеждаемся, что первая точка не совпадает со спавном
             if (selectedPoints.Count > 0 && Vector3.Distance(spawnPoint.position, selectedPoints[0].position) < 0.5f)
             {
                 Transform first = selectedPoints[0];
@@ -83,7 +79,7 @@ public class CustomerSpawner : MonoBehaviour
             }
 
             customerAI.SetWaypoints(selectedPoints);
-            customerAI.SetShoppingList(shoppingList); // ← передаём список покупок
+            customerAI.SetShoppingList(shoppingList);
             customerAI.SetCashPoint(cashWaypoint);
 
             activeCustomers.Add(customerAI);

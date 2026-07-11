@@ -19,7 +19,13 @@ public class CustomerAI : NPCBase
     private bool isRegistered = false;
 
     [SerializeField] private Transform handPosition;
+    private List<GameObject> handItems = new List<GameObject>();
+
+    private float stackOffsetY = 1f; 
+    private float dragMultiplier = 0.1f;
+    private float maxDrag = 0.5f;        
     private GameObject handItemObject;
+
 
     public void SetShoppingList(List<ItemType> items)
     {
@@ -186,53 +192,84 @@ public class CustomerAI : NPCBase
 
     private void UpdateHand(ItemData item)
     {
-        if (handItemObject != null)
-        {
-            Destroy(handItemObject);
-            handItemObject = null;
-        }
-
         if (item == null || item.Icon == null || handPosition == null)
             return;
 
-        handItemObject = new GameObject("HandItem");
-        handItemObject.transform.SetParent(handPosition);
-        handItemObject.transform.localPosition = Vector3.zero;
-        handItemObject.transform.localScale = Vector3.one;
+        // Создаём новый предмет
+        GameObject newItem = new GameObject("HandItem_" + handItems.Count);
+        newItem.transform.SetParent(handPosition);
+        newItem.transform.localScale = Vector3.one;
 
-        SpriteRenderer sr = handItemObject.AddComponent<SpriteRenderer>();
+        SpriteRenderer sr = newItem.AddComponent<SpriteRenderer>();
         sr.sprite = item.Icon;
+        sr.sortingLayerName = spriteRenderer != null ? spriteRenderer.sortingLayerName : "Default";
+        sr.sortingOrder = spriteRenderer != null ? spriteRenderer.sortingOrder + 1 : 1;
+        sr.flipX = spriteRenderer != null && spriteRenderer.flipX;
 
-        if (spriteRenderer != null)
-        {
-            sr.sortingLayerName = spriteRenderer.sortingLayerName;
-            sr.sortingOrder = spriteRenderer.sortingOrder + 1;
-            sr.flipX = spriteRenderer.flipX;
-        }
-        else
-        {
-            sr.sortingOrder = 1;
-        }
+        handItems.Add(newItem);
+        UpdateHandPositions();
+    }
 
+    private void UpdateHandPositions()
+    {
+        if (handItems.Count == 0) return;
+
+        // Получаем скорость движения NPC
+        float velocityX = 0f;
+        if (agent != null && agent.isOnNavMesh)
+            velocityX = agent.velocity.x;
+
+        bool isMoving = Mathf.Abs(velocityX) > 0.1f;
+
+        // Обновляем позицию каждого предмета
+        for (int i = 0; i < handItems.Count; i++)
+        {
+            GameObject obj = handItems[i];
+            if (obj == null) continue;
+
+            // Базовое смещение по Y (стопка)
+            float offsetY = i * stackOffsetY;
+
+            // Смещение по X при движении (отставание)
+            float dragX = 0f;
+            if (isMoving)
+            {
+                // Предметы отстают от руки: если идём вправо — смещаем влево (отрицательный X)
+                // и наоборот. Чем выше индекс (верхний предмет), тем сильнее отставание.
+                float drag = -velocityX * dragMultiplier * (i + 1);
+                dragX = Mathf.Clamp(drag, -maxDrag, maxDrag);
+            }
+
+            // Применяем позицию в локальных координатах руки
+            obj.transform.localPosition = new Vector3(dragX, offsetY, 0f);
+        }
     }
 
     private void ClearHand()
     {
-        if (handItemObject != null)
+        foreach (GameObject obj in handItems)
+            if (obj != null) Destroy(obj);
+        handItems.Clear();
+    }
+
+    // Обновляем поворот для всех предметов
+    protected override void UpdateHandFlip()
+    {
+        if (spriteRenderer == null) return;
+        bool flip = spriteRenderer.flipX;
+        foreach (GameObject obj in handItems)
         {
-            Destroy(handItemObject);
-            handItemObject = null;
+            if (obj == null) continue;
+            SpriteRenderer sr = obj.GetComponent<SpriteRenderer>();
+            if (sr != null) sr.flipX = flip;
         }
     }
 
-    protected override void UpdateHandFlip()
+    // Переопределяем Update, чтобы обновлять позиции предметов каждый кадр
+    protected override void Update()
     {
-        if (handItemObject == null) return;
-        SpriteRenderer sr = handItemObject.GetComponent<SpriteRenderer>();
-        if (sr != null && spriteRenderer != null)
-        {
-            sr.flipX = spriteRenderer.flipX;
-        }
+        base.Update(); // вызывает UpdateState и UpdateAnimation
+        UpdateHandPositions(); // обновляем позиции стопки
     }
 
     public void OnPaymentDone()
