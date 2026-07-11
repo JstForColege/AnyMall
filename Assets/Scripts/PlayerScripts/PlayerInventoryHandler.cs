@@ -8,7 +8,7 @@ public class PlayerInventoryHandler : MonoBehaviour
     [SerializeField] private Transform handPosition;
     [SerializeField] private SpriteRenderer playerSpriteRenderer;
 
-    private PlayerInventory inventory;
+    [SerializeField]private PlayerInventory inventory;
     private GameObject handItemObject;
     private PlayerAnimation playerAnimation;
 
