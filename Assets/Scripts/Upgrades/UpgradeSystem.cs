@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -220,9 +221,18 @@ public class UpgradeSystem : MonoBehaviour
 
     private void Start()
     {
+        StartCoroutine(DelayedLoadLevels());
+    }
+
+    private IEnumerator DelayedLoadLevels()
+    {
+        yield return null;
+
         LoadLevels();
         ApplyAllUpgrades();
     }
+
+    
 
     public void Subscribe(UpgradeType type, Action<int> callback)
     {
@@ -321,6 +331,11 @@ public class UpgradeSystem : MonoBehaviour
     }
     private void SaveLevels()
     {
+        if (SaveSystem.Instance == null)
+        {
+            Debug.LogError("SaveSystem.Instance is null! Unable to save upgrades.");
+            return;
+        }
         SaveSystem.Instance.SaveObject("upgrades", _currentLevels);
         SaveSystem.Instance.MarkDirty();
     }
@@ -331,21 +346,15 @@ public class UpgradeSystem : MonoBehaviour
         if (raw != null)
         {
             _currentLevels = raw as Dictionary<UpgradeType, int>;
-            if (_currentLevels == null)
-            {
-                _currentLevels = new Dictionary<UpgradeType, int>();
-            }
+            if (_currentLevels == null) _currentLevels = new Dictionary<UpgradeType, int>();
         }
         else
         {
             _currentLevels = new Dictionary<UpgradeType, int>();
         }
-
         foreach (UpgradeType type in Enum.GetValues(typeof(UpgradeType)))
-        {
             if (!_currentLevels.ContainsKey(type))
                 _currentLevels[type] = 0;
-        }
     }
 
     public void RestoreLevels(Dictionary<UpgradeType, int> levels)

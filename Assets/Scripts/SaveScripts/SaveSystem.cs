@@ -138,6 +138,7 @@ public class SaveSystem : MonoBehaviour
             _timer = 0f;
             if (_isDirty)
             {
+                Debug.Log("Auto-saving...");
                 SaveGame();
             }
         }
