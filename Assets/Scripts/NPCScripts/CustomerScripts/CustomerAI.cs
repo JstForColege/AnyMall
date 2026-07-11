@@ -22,7 +22,7 @@ public class CustomerAI : NPCBase
     private List<GameObject> handItems = new List<GameObject>();
 
     private float stackOffsetY = 1f; 
-    private float dragMultiplier = 0.1f;
+    private float dragMultiplier = 0.2f;
     private float maxDrag = 0.5f;        
     private GameObject handItemObject;
 
@@ -214,33 +214,26 @@ public class CustomerAI : NPCBase
     {
         if (handItems.Count == 0) return;
 
-        // Получаем скорость движения NPC
         float velocityX = 0f;
         if (agent != null && agent.isOnNavMesh)
             velocityX = agent.velocity.x;
 
         bool isMoving = Mathf.Abs(velocityX) > 0.1f;
 
-        // Обновляем позицию каждого предмета
         for (int i = 0; i < handItems.Count; i++)
         {
             GameObject obj = handItems[i];
             if (obj == null) continue;
 
-            // Базовое смещение по Y (стопка)
             float offsetY = i * stackOffsetY;
 
-            // Смещение по X при движении (отставание)
             float dragX = 0f;
             if (isMoving)
             {
-                // Предметы отстают от руки: если идём вправо — смещаем влево (отрицательный X)
-                // и наоборот. Чем выше индекс (верхний предмет), тем сильнее отставание.
                 float drag = -velocityX * dragMultiplier * (i + 1);
                 dragX = Mathf.Clamp(drag, -maxDrag, maxDrag);
             }
 
-            // Применяем позицию в локальных координатах руки
             obj.transform.localPosition = new Vector3(dragX, offsetY, 0f);
         }
     }
@@ -252,7 +245,6 @@ public class CustomerAI : NPCBase
         handItems.Clear();
     }
 
-    // Обновляем поворот для всех предметов
     protected override void UpdateHandFlip()
     {
         if (spriteRenderer == null) return;
@@ -265,11 +257,10 @@ public class CustomerAI : NPCBase
         }
     }
 
-    // Переопределяем Update, чтобы обновлять позиции предметов каждый кадр
     protected override void Update()
     {
-        base.Update(); // вызывает UpdateState и UpdateAnimation
-        UpdateHandPositions(); // обновляем позиции стопки
+        base.Update();
+        UpdateHandPositions();
     }
 
     public void OnPaymentDone()

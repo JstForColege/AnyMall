@@ -78,7 +78,6 @@ public abstract class NPCBase : MonoBehaviour
 
     protected virtual void UpdateHandFlip()
     {
-        // Переопределяется в CustomerAI
     }
 
     protected virtual void Update()

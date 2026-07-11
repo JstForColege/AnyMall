@@ -26,11 +26,9 @@ public class PlayerAnimation : MonoBehaviour
         Vector2 moveInput = playerController.GetMoveInput();
         bool isMoving = moveInput.magnitude > 0.1f;
 
-        // Анимация
         if (animator != null)
             animator.SetBool("isMoving", isMoving);
 
-        // Поворот спрайта
         if (spriteRenderer != null)
         {
             if (moveInput.x > 0)
@@ -38,7 +36,6 @@ public class PlayerAnimation : MonoBehaviour
             else if (moveInput.x < 0)
                 spriteRenderer.flipX = true;
 
-            // Если направление изменилось, обновляем предмет в руке
             if (moveInput != previousMoveInput && inventoryHandler != null)
             {
                 inventoryHandler.UpdateHandFlip();
