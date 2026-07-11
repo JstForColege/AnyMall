@@ -33,7 +33,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2.7854, y: 2.7854, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3750463831536488460}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5018032703253137150
@@ -153,6 +154,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HooliganAI
   animator: {fileID: 1861716346196322733}
   spriteRenderer: {fileID: 5018032703253137150}
+  droppedItemPrefab: {fileID: 0}
+  dropPoint: {fileID: 3750463831536488460}
 --- !u!61 &7736824081153715658
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -199,3 +202,34 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.07732776, y: 0.112352386}
   m_EdgeRadius: 0
+--- !u!1 &6315522348995631551
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3750463831536488460}
+  m_Layer: 8
+  m_Name: DropPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3750463831536488460
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6315522348995631551}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.1078, y: -0.1569, z: 0}
+  m_LocalScale: {x: 0.063084, y: 0.063084, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7127781455975009806}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

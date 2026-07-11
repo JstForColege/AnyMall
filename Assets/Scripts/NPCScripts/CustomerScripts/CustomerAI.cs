@@ -19,7 +19,13 @@ public class CustomerAI : NPCBase
     private bool isRegistered = false;
 
     [SerializeField] private Transform handPosition;
+    private List<GameObject> handItems = new List<GameObject>();
+
+    private float stackOffsetY = 1f; 
+    private float dragMultiplier = 0.2f;
+    private float maxDrag = 0.5f;        
     private GameObject handItemObject;
+
 
     public void SetShoppingList(List<ItemType> items)
     {
@@ -186,53 +192,75 @@ public class CustomerAI : NPCBase
 
     private void UpdateHand(ItemData item)
     {
-        if (handItemObject != null)
-        {
-            Destroy(handItemObject);
-            handItemObject = null;
-        }
-
         if (item == null || item.Icon == null || handPosition == null)
             return;
 
-        handItemObject = new GameObject("HandItem");
-        handItemObject.transform.SetParent(handPosition);
-        handItemObject.transform.localPosition = Vector3.zero;
-        handItemObject.transform.localScale = Vector3.one;
+        // Создаём новый предмет
+        GameObject newItem = new GameObject("HandItem_" + handItems.Count);
+        newItem.transform.SetParent(handPosition);
+        newItem.transform.localScale = Vector3.one;
 
-        SpriteRenderer sr = handItemObject.AddComponent<SpriteRenderer>();
+        SpriteRenderer sr = newItem.AddComponent<SpriteRenderer>();
         sr.sprite = item.Icon;
+        sr.sortingLayerName = spriteRenderer != null ? spriteRenderer.sortingLayerName : "Default";
+        sr.sortingOrder = spriteRenderer != null ? spriteRenderer.sortingOrder + 1 : 1;
+        sr.flipX = spriteRenderer != null && spriteRenderer.flipX;
 
-        if (spriteRenderer != null)
-        {
-            sr.sortingLayerName = spriteRenderer.sortingLayerName;
-            sr.sortingOrder = spriteRenderer.sortingOrder + 1;
-            sr.flipX = spriteRenderer.flipX;
-        }
-        else
-        {
-            sr.sortingOrder = 1;
-        }
+        handItems.Add(newItem);
+        UpdateHandPositions();
+    }
 
+    private void UpdateHandPositions()
+    {
+        if (handItems.Count == 0) return;
+
+        float velocityX = 0f;
+        if (agent != null && agent.isOnNavMesh)
+            velocityX = agent.velocity.x;
+
+        bool isMoving = Mathf.Abs(velocityX) > 0.1f;
+
+        for (int i = 0; i < handItems.Count; i++)
+        {
+            GameObject obj = handItems[i];
+            if (obj == null) continue;
+
+            float offsetY = i * stackOffsetY;
+
+            float dragX = 0f;
+            if (isMoving)
+            {
+                float drag = -velocityX * dragMultiplier * (i + 1);
+                dragX = Mathf.Clamp(drag, -maxDrag, maxDrag);
+            }
+
+            obj.transform.localPosition = new Vector3(dragX, offsetY, 0f);
+        }
     }
 
     private void ClearHand()
     {
-        if (handItemObject != null)
-        {
-            Destroy(handItemObject);
-            handItemObject = null;
-        }
+        foreach (GameObject obj in handItems)
+            if (obj != null) Destroy(obj);
+        handItems.Clear();
     }
 
     protected override void UpdateHandFlip()
     {
-        if (handItemObject == null) return;
-        SpriteRenderer sr = handItemObject.GetComponent<SpriteRenderer>();
-        if (sr != null && spriteRenderer != null)
+        if (spriteRenderer == null) return;
+        bool flip = spriteRenderer.flipX;
+        foreach (GameObject obj in handItems)
         {
-            sr.flipX = spriteRenderer.flipX;
+            if (obj == null) continue;
+            SpriteRenderer sr = obj.GetComponent<SpriteRenderer>();
+            if (sr != null) sr.flipX = flip;
         }
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+        UpdateHandPositions();
     }
 
     public void OnPaymentDone()

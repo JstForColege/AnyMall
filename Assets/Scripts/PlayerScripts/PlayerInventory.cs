@@ -11,7 +11,10 @@ public class PlayerInventory
     {
         maxSize = initialMaxSize;
     }
-
+    public List<ItemData> GetAllItems()
+    {
+        return new List<ItemData>(stack);
+    }
     public int Count => stack.Count;
     public int MaxSize => maxSize;
     public bool IsFull => stack.Count >= maxSize;

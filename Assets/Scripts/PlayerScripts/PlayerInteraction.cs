@@ -66,6 +66,19 @@ public class PlayerInteraction : MonoBehaviour
                 Debug.Log("Player: Hooligan not at shelf yet");
             return;
         }
+        if (other.TryGetComponent(out DroppedItem dropped))
+        {
+            bool picked = dropped.PickUp(inventoryHandler);
+            if (picked)
+            {
+                Debug.Log("Игрок подобрал упавший предмет");
+            }
+            else
+            {
+                Debug.Log("Не удалось подобрать предмет (инвентарь полон?)");
+            }
+            return;
+        }
     }
 
     private void OnTriggerStay2D(Collider2D other)
